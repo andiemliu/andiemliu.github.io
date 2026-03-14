@@ -171,7 +171,9 @@ nav {
     align-self: center;
 }
 .menu-container-dark {
-    background-color:rgba(242, 255, 227, 0.932);
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 .menu li {
     display: inline; /* Display list items horizontally */
