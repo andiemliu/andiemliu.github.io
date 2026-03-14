@@ -22,9 +22,17 @@ section {
     margin: 0px ;
 }
 a {
-    color: rgb(0, 0, 0);
-    font-size: 16.5px;
+  color: #2f6df6;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(47,109,246,0.3);
+  transition: border-color 0.2s ease, opacity 0.2s ease;
 }
+
+a:hover {
+  border-bottom-color: rgba(47,109,246,0.8);
+  opacity: 0.9;
+}
+
 p, li {
     color: rgba(43, 43, 43, 0.934)
 }
