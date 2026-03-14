@@ -1,16 +1,18 @@
 body, h1, h2, h3, p, ul, li, a {
     margin: 0;
     padding: 0;
-    font-family: Helvetica;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-decoration: none;
-    line-height: 1.5;
+    line-height: 1.7;
+    max-width: 620px;
+    margin-bottom: 14px;
 }
 body {
     background-color:#cbe0ec;
     transition: background-color 0.9s ease;
 }
 h1 {
-    font-family:Helvetica;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin:55px 0px 0px 15px;
     font-size: 50pt;
     font-weight:400;
@@ -58,9 +60,14 @@ p, li {
     margin-top:35px;
 }
 .section-link a {
-    text-decoration: none;
-    font-weight: bold;
-    color: rgba(41, 41, 41, 0.71)
+      color: #2f6df6;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(47,109,246,0.3);
+  transition: border-color 0.2s ease, opacity 0.2s ease;
+}
+a:hover {
+  border-bottom-color: rgba(47,109,246,0.8);
+  opacity: 0.9;
 }
 .active a {
     color: rgb(0, 0, 0);
@@ -81,7 +88,11 @@ p, li {
     max-width:40%;
 }
 .left-container h2 {
-    margin:5px 0px 0px 25px;
+    /* margin:5px 0px 0px 25px; */
+    font-weight: 500;
+    margin-top: 25px;
+    margin-bottom: 10px;
+
 }
 footer {
     position:fixed;
@@ -118,6 +129,9 @@ footer {
 }
 .right-container h2 {
     margin-left:0;
+    font-weight: 500;
+    margin-top: 25px;
+    margin-bottom: 10px;
 }
 .right-container li {
     line-height: 1.4;
