@@ -1,10 +1,12 @@
+html {
+    scroll-behavior: smooth;
+}
 body, h1, h2, h3, p, ul, li, a {
     margin: 0;
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
     text-decoration: none;
     line-height: 1.7;
-    max-width: 620px;
     margin-bottom: 14px;
 }
 body {
@@ -24,7 +26,7 @@ section {
     margin: 0px ;
 }
 a {
-  color: #2f6df6;
+  color: #000000;
   text-decoration: none;
   border-bottom: 1px solid rgba(47,109,246,0.3);
   transition: border-color 0.2s ease, opacity 0.2s ease;
@@ -38,7 +40,7 @@ a:hover {
 p, li {
     color: rgba(43, 43, 43, 0.934)
 }
-/* ABOUT SECTION */
+/* ABOUT SECTION (ON LEFT HAND SIDE) */
 .about {
     line-height: 1.4;
     margin:5px 0px 0px 15px;
@@ -48,6 +50,7 @@ p, li {
 .about p {
     margin-left:25px;
     line-height:1.5;
+    max-width: 620px;
 }
 .about li {
     margin:5px 0px 0px 25px;
@@ -60,13 +63,13 @@ p, li {
     margin-top:35px;
 }
 .section-link a {
-      color: #2f6df6;
+  color: #6e7ba1c5;
   text-decoration: none;
-  border-bottom: 1px solid rgba(47,109,246,0.3);
+  border-bottom: 1px solid rgba(133, 155, 203, 0.3);
   transition: border-color 0.2s ease, opacity 0.2s ease;
 }
 a:hover {
-  border-bottom-color: rgba(47,109,246,0.8);
+  border-bottom-color: rgba(58,95,191,0.8);
   opacity: 0.9;
 }
 .active a {
@@ -88,15 +91,13 @@ a:hover {
     max-width:40%;
 }
 .left-container h2 {
-    /* margin:5px 0px 0px 25px; */
+    margin:25px 0px 10px 25px;
     font-weight: 500;
-    margin-top: 25px;
-    margin-bottom: 10px;
-
 }
 footer {
     position:fixed;
     margin-top: auto; 
+    margin-left:10px;
     bottom:0;
     width:50%;
     height:50px;
@@ -106,6 +107,7 @@ footer {
 }
 /* Style the social icons */
 .social-icons {
+    display: flex;
     font-size: 24px; /* Adjust the font size to make the icons bigger */
     margin-bottom:30px;
   }
@@ -115,7 +117,7 @@ footer {
     margin: 0 10px; /* Add spacing between icons */
   }
   
-  /* Change the color of icons on hover (optional) */
+  /* Change the color of icons on hover */
   .social-icons a:hover i {
     color: rgba(80, 80, 80, 0.796);
   }
@@ -127,17 +129,21 @@ footer {
     height: 100vh;
     position:relative;
 }
+/* Spacer box for extra vertical space at bottom of right container */
+.spacer-box {
+    height: 100px;
+    width: 100%;
+}
 .right-container h2 {
     margin-left:0;
     font-weight: 500;
-    margin-top: 25px;
+    margin-top: 200px;
     margin-bottom: 10px;
 }
 .right-container li {
     line-height: 1.4;
     margin-left:0px;
     margin-right: 145px;
-    /*margin-bottom:5px;*/
 }
 /* RESUME STYLE */
 .resume-box {
@@ -153,14 +159,16 @@ footer {
     text-align: left;
     margin-top:15px;
     margin-bottom:2.5px;
+    font-weight:600;
 }
 .resumeTime {
     text-align: right;
     margin-top:18px;
     margin-bottom:2.5px;
     font-weight:400;
-    font-size:14px;
+    font-size:15px;
 }
+
 /* MENU STYLE */
 nav {
     z-index: 100;
@@ -201,7 +209,6 @@ nav {
     display: inline; /* Display list items horizontally */
     margin: 15px 20px 15px 20px; /* Add spacing between menu items */
     font-size:17px;
-    font-weight: bold;
 }
 
 .menu li:last-child {
@@ -211,13 +218,12 @@ nav {
 .menu a {
     text-decoration: none;
     color: black;
-    font-weight: bold;
+    font-weight: 400;
     padding: 15px;
     border:5px;
     transition: background-color 0.7s;
     transition: ease 0.5s;
     text-align:center;
-    font-weight: 500;
     border-radius: 50px;
   }
   
