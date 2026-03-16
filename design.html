@@ -113,6 +113,71 @@
       .pdf-thumb:hover            { transform: scale(1.08); }
       .pdf-thumb.active           { border-color: #888; }
       .pdf-thumb canvas           { width: 100%; height: 100%; display: block; }
+
+      /* ── Image Carousel ─────────────────────────────────────── */
+      .img-carousel {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        height: calc(100vh - 280px);
+        min-height: 400px;
+        margin-top: 10px;
+      }
+
+      .img-stage {
+        position: relative;
+        width: 100%;
+        flex: 1;
+        min-height: 0;
+        border-radius: 6px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .img-stage-inner {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 0.22s ease;
+      }
+      .img-stage-inner.fading { opacity: 0; }
+
+      .img-stage img {
+        max-width: calc(100% - 48px);
+        max-height: calc(100% - 48px);
+        object-fit: contain;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+        border-radius: 3px;
+      }
+
+      /* Thumbnail strip for carousel */
+      .img-thumbs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 900px;
+      }
+      .img-thumb {
+        width: 64px;
+        height: 52px;
+        border-radius: 3px;
+        border: 2px solid transparent;
+        cursor: pointer;
+        overflow: hidden;
+        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        transition: border-color 0.15s, transform 0.12s;
+        flex-shrink: 0;
+        background: #e8e2da;
+      }
+      .img-thumb:hover     { transform: scale(1.08); }
+      .img-thumb.active    { border-color: #888; }
+      .img-thumb img       { width: 100%; height: 100%; object-fit: cover; display: block; }
     </style>
   </head>
   <body class="design-pg">
@@ -130,12 +195,14 @@
       </nav>
 
       <div class="design-container">
-        <!-- <h1 style="margin-left: 30px;">Design Portfolio</h1> -->
+        <h1>Design Portfolio</h1>
         <section>
-            <p>Design has been a thread through many of the communities I’ve worked in—from laying out page spreads as a student journalist to creating flyers and social media graphics for library events. I’m drawn to design that clarifies ideas and invites people in. This page includes editorial layouts, event graphics, and a small zine exploring German philosophy and my final semester at Berkeley.</p>
-          <h2 style="justify-self: center;">Eigenformation Zine</h2>
-          <div class="pdf-viewer">
+            <p>Design has been a thread through many of the communities I've worked in, from laying out page spreads as a student journalist to creating flyers and social media graphics for library events. I'm drawn to design that clarifies ideas and invites people in. This page includes editorial layouts, event graphics, and a zine exploring my final semester at Berkeley through a German philosophy lens.</p>
+          <h2 style="justify-self: center; margin-top:50px;">[eigen/trans]formation</h2>
+                  <p>In German, eigen means "self." This zine explores how self formation <em>is</em> transformation through a personal reflection on an Ideas of Education course, where I dived into complex philosophies of Goethe, Schiller, Hegel, and other German thinkers.
+        The main idea of the course, <em>bildung</em>, is a German word that refers to the process of self-cultivation and education. The works of these thinkers fundamentally disoriented my understanding of the self, education via <em>bildung</em>, and alienation in a modern world.</p>
 
+          <div class="pdf-viewer">
             <!-- Fixed-size stage -->
             <div class="pdf-stage" id="pdf-stage" title="Click to open PDF">
               <div class="pdf-stage-inner" id="pdf-stage-inner">
@@ -164,6 +231,37 @@
             <div class="pdf-thumbs" id="pdf-thumbs"></div>
 
           </div><!-- /.pdf-viewer -->
+        </section>
+
+        <section style="margin-top: 80px;">
+          <h2 style="justify-self: center;">Newsmagazine Page Designs</h2>
+          <p>While I was a student journalist, I had the opportunity to lay out page spreads for our campus publication. These designs reflect my approach to combining visual elements with written content to create engaging narratives.</p>
+          <div class="img-carousel">
+
+            <div class="img-stage" id="img-stage">
+              <div class="img-stage-inner" id="img-stage-inner">
+                <img id="carousel-img" src="" alt="">
+              </div>
+            </div>
+
+            <div class="pdf-controls">
+              <button id="img-prev" class="round-btn" aria-label="Previous image" disabled>
+                <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5"
+                    stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </button>
+              <span id="img-info" style="font-size:0.92rem;letter-spacing:0.03em;min-width:80px;text-align:center;color:#555;">1 / 6</span>
+              <button id="img-next" class="round-btn" aria-label="Next image">
+                <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                  <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5"
+                    stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </button>
+            </div>
+
+            <div class="img-thumbs" id="img-thumbs"></div>
+             <div style="height: 80px;"></div> <!-- Spacer to prevent footer overlap -->
         </section>
         <!-- Add more design portfolio items below as needed -->
       </div>
@@ -268,5 +366,65 @@
       });
     })();
     </script>
+
+    <script>
+    (() => {
+      const IMAGES = [
+        { src: './page-designs/entrepreneurs-1.png', label: 'Entrepreneurs 1' },
+        { src: './page-designs/entrepreneurs-2.png', label: 'Entrepreneurs 2' },
+        { src: './page-designs/feminism.jpg',        label: 'Feminism' },
+        { src: './page-designs/masculinity.jpg',     label: 'Masculinity' },
+        { src: './page-designs/process.jpg',         label: 'Process' },
+        { src: './page-designs/return-in-person.jpg',label: 'Return in Person' },
+      ];
+
+      let current  = 0;
+      let fading   = false;
+
+      const inner   = document.getElementById('img-stage-inner');
+      const img     = document.getElementById('carousel-img');
+      const prevBtn = document.getElementById('img-prev');
+      const nextBtn = document.getElementById('img-next');
+      const info    = document.getElementById('img-info');
+      const thumbs  = document.getElementById('img-thumbs');
+
+      function showImage(idx, instant) {
+        if (fading) return;
+        fading = true;
+        inner.classList.add('fading');
+        setTimeout(() => {
+          img.src = IMAGES[idx].src;
+          img.alt = IMAGES[idx].label;
+          inner.classList.remove('fading');
+          info.textContent = `${idx + 1} / ${IMAGES.length}`;
+          prevBtn.disabled = idx === 0;
+          nextBtn.disabled = idx === IMAGES.length - 1;
+          document.querySelectorAll('.img-thumb').forEach((t, i) =>
+            t.classList.toggle('active', i === idx));
+          fading = false;
+        }, instant ? 0 : 220);
+      }
+
+      // Build thumbnails
+      IMAGES.forEach((im, i) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'img-thumb' + (i === 0 ? ' active' : '');
+        wrap.title = im.label;
+        wrap.addEventListener('click', () => { current = i; showImage(i); });
+        const t = document.createElement('img');
+        t.src = im.src;
+        t.alt = im.label;
+        wrap.appendChild(t);
+        thumbs.appendChild(wrap);
+      });
+
+      prevBtn.addEventListener('click', () => { if (current > 0)                   { current--; showImage(current); } });
+      nextBtn.addEventListener('click', () => { if (current < IMAGES.length - 1)   { current++; showImage(current); } });
+
+      // Show first image immediately
+      showImage(0, true);
+    })();
+    </script>
+
   </body>
 </html>
