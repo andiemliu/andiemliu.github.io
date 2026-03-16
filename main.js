@@ -20,15 +20,71 @@ document.addEventListener('DOMContentLoaded', function () {
     // add class navbarDark on navbar scroll
     const menu = document.querySelector('.menu-container');
 
-    window.onscroll = function() {
+    let lastScrollY = window.scrollY;
+    let menuVisible = true;
+    let hideTimeout = null;
+
+    function hideMenu() {
+        menu.classList.add('menu-hidden');
+        menuVisible = false;
+    }
+    function showMenu() {
+        menu.classList.remove('menu-hidden');
+        menuVisible = true;
+    }
+
+
+    let menuWasHiddenByScroll = false;
+    window.addEventListener('scroll', function() {
         var top = window.scrollY;
-        if(top >=40) {
-            menu.classList.add('menu-container-dark');
-        }
-        else {
+        // Only add background if menu is revealed by mouse after scrolling
+        if (top >= 40) {
+            menu.classList.remove('menu-container-dark');
+        } else {
             menu.classList.remove('menu-container-dark');
         }
-    }
+
+        // Hide menu when scrolling down, show when scrolling up to top
+        if (window.scrollY > lastScrollY && window.scrollY > 60) {
+            // Scrolling down
+            if (menuVisible) hideMenu();
+            menuWasHiddenByScroll = true;
+        } else if (window.scrollY < lastScrollY || window.scrollY <= 10) {
+            // Scrolling up or near top
+            if (!menuVisible) showMenu();
+            menuWasHiddenByScroll = false;
+        }
+        lastScrollY = window.scrollY;
+    });
+
+    // Show menu when mouse is near the top (within 60px)
+    document.addEventListener('mousemove', function(e) {
+        if (e.clientY < 60) {
+            if (!menuVisible) showMenu();
+            if (hideTimeout) clearTimeout(hideTimeout);
+            // Only show background if menu was hidden by scroll
+            if (window.scrollY > 60 && menuWasHiddenByScroll) {
+                menu.classList.add('menu-container-dark');
+            } else {
+                menu.classList.remove('menu-container-dark');
+            }
+        } else if (menuVisible && window.scrollY > 60) {
+            if (hideTimeout) clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(hideMenu, 400);
+        }
+    });
+
+    // Show menu when mouse is near the top (within 60px)
+    document.addEventListener('mousemove', function(e) {
+        if (e.clientY < 60) {
+            if (!menuVisible) showMenu();
+            if (hideTimeout) clearTimeout(hideTimeout);
+        } else if (menuVisible && window.scrollY > 60) {
+            // Hide after a short delay if mouse leaves top
+            if (hideTimeout) clearTimeout(hideTimeout);
+            hideTimeout = setTimeout(hideMenu, 400);
+        }
+    });
     jokeElement = document.getElementById('joke');
     // Function to fetch a dad joke from the API
     async function fetchDadJoke() {

@@ -40,7 +40,137 @@ a:hover {
 p, li {
     color: rgba(43, 43, 43, 0.934)
 }
-/* ABOUT SECTION (ON LEFT HAND SIDE) */
+
+
+/* MENU STYLE */
+nav {
+    z-index: 100;
+    display:flex;
+    margin:25px;
+    justify-content: center;
+    position:fixed;
+    left:0;
+    width: 100vw;
+    top: 5px;
+    transition:ease-in-out 1s;
+    top:0;
+}
+.menu-container {
+    opacity: 0;
+    transition: opacity 1s ease, transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    border-radius: 50px;
+    padding: 5px;
+    width:620px;
+    align-self:center;
+    will-change: transform, opacity;
+}
+
+/* Hide menu when scrolling down */
+.menu-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-100px);
+}
+.menu {
+    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+}
+.menu-container-dark {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+.menu li {
+    display: inline; /* Display list items horizontally */
+    margin: 15px 20px 15px 20px; /* Add spacing between menu items */
+    font-size:17px;
+}
+
+.menu li:last-child {
+    margin-right: 20px; /* Remove margin from the last item */
+}
+  
+/* Animated underline for menu items */
+.menu a {
+    position: relative;
+    text-decoration: none;
+    color: black;
+    font-weight: 400;
+    padding: 15px 0 10px 0;
+    border: none;
+    background: none;
+    transition: color 0.2s;
+    text-align: center;
+    border-radius: 50px;
+    display: inline-block;
+}
+.menu a::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    bottom: 6px;
+    width: 100%;
+    height: 3px;
+    background: #6e7ba1c5;
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.28s cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+}
+.menu a:hover::after,
+.menu .active a::after,
+.menu a.active::after {
+    transform: scaleX(1);
+}
+.menu .active a,
+.menu a.active {
+    color: #222;
+    font-weight: 600;
+}
+footer {
+    position:fixed;
+    margin-top: auto; 
+    margin-left:5px;
+    bottom:0;
+    width:50%;
+    height:50px;
+    text-align:left;
+    padding:10px;
+    size:150%;
+}
+/* Style the social icons */
+.social-icons {
+    display: flex;
+    font-size: 24px; /* Adjust the font size to make the icons bigger */
+    margin-bottom:30px;
+  }
+  /* Style individual icons */
+  .social-icons a i {
+    color: rgb(37, 34, 34);
+    margin: 0 10px; /* Add spacing between icons */
+  }
+  .social-icons a {
+    border-bottom: none;
+}
+
+  /* Change the color of icons on hover */
+  .social-icons a:hover i {
+    color: rgba(80, 80, 80, 0.796);
+}
+.social-icons a:hover svg {
+    fill: rgba(80, 80, 80, 0.796);
+}
+
+  
+/* ABOUT PAGE (ON LEFT HAND SIDE) */
 .about {
     line-height: 1.4;
     margin:5px 0px 0px 15px;
@@ -76,7 +206,7 @@ a:hover {
     color: rgb(0, 0, 0);
 }
 .home-pg .container {
-    margin:120px 80px 500px 80px;
+    margin:120px 80px 30px 80px;
 }
 .home-pg h1 {
     margin:55px 0px 0px 25px;
@@ -94,48 +224,32 @@ a:hover {
     margin:25px 0px 10px 25px;
     font-weight: 500;
 }
-footer {
-    position:fixed;
-    margin-top: auto; 
-    margin-left:10px;
-    bottom:0;
-    width:50%;
-    height:50px;
-    text-align:left;
-    padding:10px;
-    size:150%;
-}
-/* Style the social icons */
-.social-icons {
-    display: flex;
-    font-size: 24px; /* Adjust the font size to make the icons bigger */
-    margin-bottom:30px;
-  }
-  /* Style individual icons */
-  .social-icons a i {
-    color: rgb(37, 34, 34);
-    margin: 0 10px; /* Add spacing between icons */
-  }
-  
-  /* Change the color of icons on hover */
-  .social-icons a:hover i {
-    color: rgba(80, 80, 80, 0.796);
-  }
+
+/* right hand side for about page: experience, education, projects */
 .right-container {
     opacity: 0;
     transition: opacity 1s ease;
-    margin-left:50%;
+    margin-left: 50%;
     width: 50%;
-    height: 100vh;
-    position:relative;
+    /* Inset the container so it only occupies the middle band of the viewport,
+       matching the visual top/bottom margins of the left container */
+    position: sticky;
+    top: 120px;
+    height: calc(100vh - 240px); /* 120px breathing room top and bottom */
+    overflow-y: scroll;
+    overflow-x: visible;
+    background: transparent;
+    box-sizing: border-box;
 }
-/* Spacer box for extra vertical space at bottom of right container */
-.spacer-box {
-    height: 100px;
-    width: 100%;
+html, body, .container, .right-container, .about {
+    scrollbar-width: none !important;
+    /* -ms-overflow-style: none !important; */
 }
-.right-container h2 {
-    margin-left:0;
+html::-webkit-scrollbar, body::-webkit-scrollbar, .container::-webkit-scrollbar, .right-container::-webkit-scrollbar, .about::-webkit-scrollbar {
+    display: none !important;
+}
+.about .right-container h2 {
+    margin-left: 0;
     font-weight: 500;
     margin-top: 200px;
     margin-bottom: 10px;
@@ -145,7 +259,8 @@ footer {
     margin-left:0px;
     margin-right: 145px;
 }
-/* RESUME STYLE */
+
+/* resume item style */
 .resume-box {
     margin: 12px 0px 12px 0px;
     padding: 8px 1px 8px 1px;
@@ -169,71 +284,49 @@ footer {
     font-size:15px;
 }
 
-/* MENU STYLE */
-nav {
-    z-index: 100;
-    display:flex;
-    margin:25px;
-    justify-content: center;
-    position:fixed;
-    left:32%;
-    top: 5px;
-    transition:ease-in-out 1s;
-    top:0;
-}
-.menu {
-    height:50px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items:center;
-    padding:5;
-    text-align:center;
-    max-width:50px;
-    margin: 0 auto;
-}
-.menu-container {
-    opacity: 0;
+/* DESIGN PAGE */
+/* Portfolio container */
+.design-container {
     transition: opacity 1s ease;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 120px 0 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-sizing: border-box;
+    justify-content: flex-start;
+}
+.design-container h1 {
+    margin:0px 0px 0px 25px;
+}
+.design-container h2 {
+    font-weight: 500;
+}
+.design-container p {
+    margin:20px;
+}
+/* Round PDF navigation buttons for design page */
+.pdf-controls button, .round-btn {
+    margin: 0 10px;
+    padding: 10px 12px;
     border-radius: 50px;
-    padding: 5px;
-    width:520px;
-    align-self: center;
+    border: none;
+    color: #222;
+    background-color: transparent;
+    font-size: 1.1em;
+    font-weight: 500;
+    cursor: pointer;
 }
-.menu-container-dark {
+.pdf-controls button:hover, .round-btn:hover {
+    color: #000;
     background-color: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-.menu li {
-    display: inline; /* Display list items horizontally */
-    margin: 15px 20px 15px 20px; /* Add spacing between menu items */
-    font-size:17px;
+    box-shadow: 0 2px 8px rgba(120,120,120,0.08);
+    transform: translateY(-2px) scale(1.04);
 }
 
-.menu li:last-child {
-    margin-right: 20px; /* Remove margin from the last item */
-}
-  
-.menu a {
-    text-decoration: none;
-    color: black;
-    font-weight: 400;
-    padding: 15px;
-    border:5px;
-    transition: background-color 0.7s;
-    transition: ease 0.5s;
-    text-align:center;
-    border-radius: 50px;
-  }
-  
-.menu a:hover {
-    background-color: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding: 15px;
-}
-/* FORM STYLE */
+/* CONTACT FORM STYLE */
 form {
     display:flex;
     flex-direction:column;
