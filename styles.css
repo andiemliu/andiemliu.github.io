@@ -160,7 +160,6 @@ footer {
   .social-icons a {
     border-bottom: none;
 }
-
   /* Change the color of icons on hover */
   .social-icons a:hover i {
     color: rgba(80, 80, 80, 0.796);
@@ -211,6 +210,7 @@ a:hover {
 .home-pg h1 {
     margin:55px 0px 0px 25px;
 }
+/* left hand side for about page: intro, bio */
 .left-container {
     opacity: 0;
     transition: opacity 1s ease;
@@ -243,7 +243,6 @@ a:hover {
 }
 html, body, .container, .right-container, .about {
     scrollbar-width: none !important;
-    /* -ms-overflow-style: none !important; */
 }
 html::-webkit-scrollbar, body::-webkit-scrollbar, .container::-webkit-scrollbar, .right-container::-webkit-scrollbar, .about::-webkit-scrollbar {
     display: none !important;
@@ -284,6 +283,33 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, .container::-webkit-scrollbar,
     font-size:15px;
 }
 
+/* ART PAGE */
+/* grid layout */
+.art-pg p {
+    margin:20px;
+}
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
+    gap: 20px; /* Add spacing between grid items */
+    padding: 20px; /* Add padding around the grid */
+}
+/* individual grid items */
+.grid-item {
+    text-align: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+/* images within grid items */
+.grid-item img {
+    max-width: 100%;
+    height: auto;
+  }
+/* labels for the images */
+.grid-item p {
+    margin: 10px 0;
+}
+
 /* DESIGN PAGE */
 /* Portfolio container */
 .design-container {
@@ -307,7 +333,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, .container::-webkit-scrollbar,
 .design-container p {
     margin:20px;
 }
-/* Round PDF navigation buttons for design page */
+/* Round PDF navigation buttons for multipage designs */
 .pdf-controls button, .round-btn {
     margin: 0 10px;
     padding: 10px 12px;
@@ -326,7 +352,8 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, .container::-webkit-scrollbar,
     transform: translateY(-2px) scale(1.04);
 }
 
-/* CONTACT FORM STYLE */
+
+/* CONTACT PAGE */
 form {
     display:flex;
     flex-direction:column;
@@ -358,37 +385,8 @@ input[type=submit]:hover {
 }
 .contact-pg .container {
     margin:150px;
-}
-/* GRID STYLE */
-.art-pg p {
-    margin:20px;
-}
-.image-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
-    gap: 20px; /* Add spacing between grid items */
-    padding: 20px; /* Add padding around the grid */
-  }
-  
-  /* Style the individual grid items */
-  .grid-item {
-    text-align: center;
-    border: 1px solid #ccc;
-    padding: 10px;
-}
-  
-  /* Style the images within grid items */
-  .grid-item img {
-    max-width: 100%;
-    height: auto;
-  }
-  
-  /* Style the captions or labels for the images */
-  .grid-item p {
-    margin: 10px 0;
-  }
-  
-  #joke {
+} 
+#joke {
     display: flex;
     margin-top: 8px;
-  }
+}
