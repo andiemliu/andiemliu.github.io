@@ -379,13 +379,16 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, .container::-webkit-scrollbar,
 }
 
 /* DESIGN PAGE */
+.design-pg .container {
+    width: 66.66vw;
+    margin: 0 auto;
+}
+
 /* Portfolio container */
 .design-container {
     transition: opacity 1s ease;
-    height: 100vh;
-    width: 66.66vw;
+    min-height: 100vh;
     justify-self: center;
-    margin: 0 auto;
     padding: 120px 0 0 0;
     display: flex;
     flex-direction: column;
@@ -394,12 +397,12 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, .container::-webkit-scrollbar,
     justify-content: flex-start;
 }
 .design-container h1 {
-    margin:0 auto;
+    margin:0 auto 30px auto;
     text-align: center;
 }
 .design-container h2 {
     font-weight: 500;
-    margin:0 auto;
+    margin:50px auto 0 auto;
     text-align: center;
 }
 .design-container p {
