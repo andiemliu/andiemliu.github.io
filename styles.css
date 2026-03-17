@@ -473,34 +473,55 @@ input[type=submit]:hover {
     max-width: 30vw !important;
     min-width: 120px;
     box-sizing: border-box;
+    /* Pastel blue-slate fill, bottom border only, no other borders */
+    background-color: rgba(110, 123, 161, 0.10);
+    border: none;
+    border-bottom: 2px solid #6e7ba1c5;
+    border-radius: 6px 6px 0 0;
+    padding: 10px 12px;
+    outline: none;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.contact-pg input[type="text"]:focus, .contact-pg input[type="email"]:focus {
+    background-color: rgba(110, 123, 161, 0.17);
+    border-bottom-color: #6e7ba1;
 }
 .contact-pg textarea {
-    padding:50px;
     resize: none;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
+    background-color: rgba(110, 123, 161, 0.10);
+    border: none;
+    border-bottom: 2px solid #6e7ba1c5;
+    border-radius: 6px 6px 0 0;
+    padding: 14px 12px;
+    outline: none;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.contact-pg textarea:focus {
+    background-color: rgba(110, 123, 161, 0.17);
+    border-bottom-color: #6e7ba1;
 }
 .contact-pg input[type="submit"] {
     width: auto !important;
     min-width: 0;
-    padding: 12px 15px;
-    border-radius: 50px;
-    border: none;
-    color: #222;
-    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px 24px;
+    border-radius: 6px;
+    border: 1.5px solid #6e7ba1c5;
+    color: #3a4a6e;
+    background-color: transparent;
     cursor: pointer;
     align-self: flex-start;
     box-sizing: border-box;
-    font-size: 1.1em;
-    font-weight:550;
+    font-size: 1em;
+    font-weight: 500;
+    transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
-.contact-pg input[type="submit"]:hover{
-    color: #000;
-    background-color:var(--main-bg);
-    box-shadow: 0 2px 8px rgba(120,120,120,0.08);
-    border-color: #222;
-    border: 1px solid rgba(47,109,246,0.3);
+.contact-pg input[type="submit"]:hover {
+    background-color: rgba(110, 123, 161, 0.13);
+    border-color: #6e7ba1;
+    color: #222;
 }
 #joke {
     display: flex;
