@@ -94,29 +94,5 @@ document.addEventListener('DOMContentLoaded', function () {
     responsePromise.then(() => leftContainer.style.opacity = 1).then(() => wait(90))
     .then(() => rightContainer.style.opacity = 1).then(() => wait(90));
     responsePromise.then(() => menu.style.opacity = 1);
-
-    // add class active on navbar link click
-    const projLink = document.getElementById('proj-link');
-    const expLink = document.getElementById('exp-link');
-
-    projLink.addEventListener('click', (event) => {
-        // Prevent the default behavior of the link (e.g., navigating to a different page)
-        event.preventDefault();
-        expLink.classList.remove('active');
-        projLink.classList.add('active');
-
-        // Get the target section element
-        const targetSection = document.getElementById("projects");
-
-        // Calculate the desired scroll position (adjust the value as needed)
-        const offset = 20; // You can change this value to control how far past the section the scroll goes
-        const scrollPosition = targetSection.offsetTop - offset;
-
-        // Scroll to the target section with the desired position
-        window.scrollTo({
-            top: scrollPosition,
-            behavior: 'smooth'
-        });
-    });
 });
   
