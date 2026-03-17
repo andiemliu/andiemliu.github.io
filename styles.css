@@ -468,11 +468,17 @@ input[type=submit]:hover {
     flex-direction: column;
     align-items: flex-start;
 }
+.required {
+    color: rgba(110, 123, 161, 0.6);
+    font-size: 0.85em;
+    font-weight: 400;
+}
 .contact-pg input[type="text"], .contact-pg input[type="email"] {
     width: 30vw !important;
     max-width: 30vw !important;
     min-width: 120px;
     box-sizing: border-box;
+    font-size: 1.05em;
     /* Pastel blue-slate fill, bottom border only, no other borders */
     background-color: rgba(110, 123, 161, 0.10);
     border: none;
@@ -488,9 +494,11 @@ input[type=submit]:hover {
 }
 .contact-pg textarea {
     resize: none;
-    width: 100%;
-    max-width: 100%;
+    /* match the paragraph text width set by the container (66.66vw with padding) */
+    width: 100% !important;
+    max-width: 100% !important;
     box-sizing: border-box;
+    font-size: 1.05em;
     background-color: rgba(110, 123, 161, 0.10);
     border: none;
     border-bottom: 2px solid #6e7ba1c5;
