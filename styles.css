@@ -12,6 +12,12 @@ body, h1, h2, h3, p, ul, li, a {
 body {
     background-color:#cbe0ec;
     transition: background-color 0.9s ease;
+    animation: pageFadeIn 0.4s ease forwards;
+}
+
+@keyframes pageFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 h1 {
     font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -38,7 +44,7 @@ a:hover {
 }
 
 p, li {
-    color: rgba(43, 43, 43, 0.934);
+    color: rgba(43, 43, 43, 0.75);
     line-height:1.5;
 }
 
@@ -347,15 +353,19 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, .container::-webkit-scrollbar,
 }
 .art-pg h1 {
     margin: 100px auto 0 auto;
+    justify-self: center;
     text-align: center;
 }
 .art-pg h2 {
-    margin: 30px 0px 20px 30px;
+    font-weight: 500;
+    text-align: center;
+    margin: 20px auto 20px auto;
 }
 .art-pg p {
     justify-self: center;
     text-wrap: pretty;
-    margin:15px 0px 0px 30px;
+    margin: 20px auto 20px auto;
+    max-width: 680px;
 }
 .image-grid {
     display: grid;
@@ -406,7 +416,9 @@ html::-webkit-scrollbar, body::-webkit-scrollbar, .container::-webkit-scrollbar,
     text-align: center;
 }
 .design-container p {
-    margin: 15px 0px 15px 0px;
+    max-width: 680px;
+    align-self: center;
+    margin: 20px auto 20px auto;
 }
 
 /* Round PDF navigation buttons for multipage designs */
@@ -545,12 +557,12 @@ input[type=submit]:hover {
     text-align: center;
 }
 .writing-intro {
-    /* max-width: 600px; */
     margin: 20px auto 20px auto;
     text-align: left;
     /* color: rgba(43,43,43,0.75); */
     font-size: 1.02em;
     line-height: 1.6;
+    max-width: 680px;
 }
 .writing-intro a {
     color: inherit;
@@ -561,6 +573,8 @@ input[type=submit]:hover {
     display: flex;
     flex-direction: column;
     gap: 0;
+    max-width: 680px;
+    margin: 0 auto;
 }
 
 .article-card {
@@ -672,6 +686,7 @@ input[type=submit]:hover {
 .media-container {
     padding: 100px 0 80px 0;
     justify-self: center;
+    align-items: center;
 }
 .media-container h1 {
     text-align: center;
@@ -680,7 +695,8 @@ input[type=submit]:hover {
 
 /* Section heading (Podcast / Video) */
 .media-section {
-    margin-top: 60px;
+    justify-self: center;
+    margin: 20px auto 20px auto;
 }
 .media-section-title {
     font-size: 1em;
@@ -695,6 +711,8 @@ input[type=submit]:hover {
 
 /* Each media item: context text on top, embed below */
 .media-item {
+    align-self: center;
+    margin: 20px auto 20px auto;
     padding: 36px 0;
     border-bottom: 1px solid rgba(110,123,161,0.13);
     max-width: 680px;

@@ -1,5 +1,18 @@
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', function () {  
+    document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href');
+    // Only intercept same-site .html links, not external or PDF links
+    if (!href || href.startsWith('http') || href.startsWith('mailto') || href.endsWith('.pdf') || href.startsWith('#')) return;
+
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.body.style.transition = 'opacity 0.25s ease';
+        document.body.style.opacity = '0';
+        setTimeout(() => { window.location.href = href; }, 260);
+    });
+});
+
     // Get the container element
     const container = document.querySelector('body');
     
@@ -91,8 +104,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const rightContainer = document.querySelector('.right-container');
     const wait = (time) => new Promise((resolve) => setTimeout(resolve, time));
     const responsePromise = wait(100);
-    responsePromise.then(() => leftContainer.style.opacity = 1).then(() => wait(90))
-    .then(() => rightContainer.style.opacity = 1).then(() => wait(90));
+    if (leftContainer && rightContainer) {
+        responsePromise.then(() => leftContainer.style.opacity = 1).then(() => wait(90))
+        .then(() => rightContainer.style.opacity = 1).then(() => wait(90));
+    }
     responsePromise.then(() => menu.style.opacity = 1);
 });
-  
