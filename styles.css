@@ -531,10 +531,6 @@ input[type=submit]:hover {
     border-color: #6e7ba1;
     color: #222;
 }
-#joke {
-    display: flex;
-    margin-top: 8px;
-}
 
 /* ── WRITING PAGE ─────────────────────────────────────────────── */
 .writing-pg .container {

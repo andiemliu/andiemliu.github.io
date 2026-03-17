@@ -86,34 +86,6 @@ document.addEventListener('DOMContentLoaded', function () {
             hideTimeout = setTimeout(hideMenu, 400);
         }
     });
-
-    jokeElement = document.getElementById('joke');
-    // Function to fetch a dad joke from the API
-    async function fetchDadJoke() {
-        try {
-            const response = await fetch('https://icanhazdadjoke.com/', {
-                headers: {
-                    'User-Agent': 'My Library',
-                    'Accept': 'application/json',
-                },
-            });
-            if (!response.ok) {
-                throw new Error('Failed to fetch joke');
-            }
-            const data = await response.json();
-            console.log(data);
-            return data.joke;
-        } catch (error) {
-            console.error('Error fetching joke:', error);
-            return 'Failed to fetch joke. Please try again later.';
-        }
-    }
-    // Function to update the joke element with a new joke
-    async function updateJoke() {
-        const joke = await fetchDadJoke();
-        jokeElement.textContent = joke;
-    }
-    updateJoke();
     
     const leftContainer = document.querySelector('.left-container');
     const rightContainer = document.querySelector('.right-container');
