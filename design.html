@@ -284,6 +284,15 @@
       opacity: 1;
     }
 
+    /* On mobile the hamburger occupies top-right (top:13px, right:16px, 40×40px).
+       Move the close button below the nav bar so the two never overlap. */
+    @media (max-width: 600px) {
+      .modal-close {
+        top: 76px;   /* 66px nav bar + 10px breathing room */
+        right: 8px;
+      }
+    }
+
     .modal-nav {
       position: fixed;
       top: 50%;
