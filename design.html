@@ -276,7 +276,8 @@
       cursor: pointer;
       opacity: 0.72;
       transition: opacity 0.15s;
-      z-index: 1200;  /* above hamburger (1100) so the × is always tappable */
+      z-index: 1200;
+      /* above hamburger (1100) so the × is always tappable */
       padding: 0;
     }
 
@@ -288,7 +289,8 @@
        Move the close button below the nav bar so the two never overlap. */
     @media (max-width: 600px) {
       .modal-close {
-        top: 76px;   /* 66px nav bar + 10px breathing room */
+        top: 76px;
+        /* 66px nav bar + 10px breathing room */
         right: 8px;
       }
     }
@@ -658,6 +660,9 @@
       }
 
       async function buildThumbs() {
+        // Render thumbnails one at a time during idle periods so the main
+        // thread isn't saturated — critical on low-end mobile CPUs.
+        const idle = window.requestIdleCallback || (cb => setTimeout(cb, 16));
         for (let i = 1; i <= pdfDoc.numPages; i++) {
           const wrapper = document.createElement('div');
           wrapper.className = 'pdf-thumb' + (i === 1 ? ' active' : '');
@@ -667,6 +672,9 @@
           const cvs = document.createElement('canvas');
           wrapper.appendChild(cvs);
           thumbsEl.appendChild(wrapper);
+
+          // Yield to the browser between each thumb render
+          await new Promise(resolve => idle(resolve));
 
           const pg = await pdfDoc.getPage(i);
           const vp = pg.getViewport({ scale: 0.12 });
@@ -699,12 +707,25 @@
       pdfjsLib.GlobalWorkerOptions.workerSrc =
         'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-      pdfjsLib.getDocument(PDF_URL).promise.then(doc => {
-        pdfDoc = doc;
-        window.setPdfDocForModal(doc);
-        renderPage(1);
-        buildThumbs();
-      });
+      // ── Defer PDF load until the viewer scrolls into view ──────
+      // On mobile, parsing + rendering a multi-page PDF on page load is the
+      // main cause of sluggishness. We wait until the stage is actually visible.
+      function loadPdf() {
+        pdfjsLib.getDocument(PDF_URL).promise.then(doc => {
+          pdfDoc = doc;
+          window.setPdfDocForModal(doc);
+          renderPage(1);
+          buildThumbs();
+        });
+      }
+
+      const pdfObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          pdfObserver.disconnect();
+          loadPdf();
+        }
+      }, { rootMargin: '200px' }); // start loading 200px before it enters view
+      pdfObserver.observe(stage);
     })();
   </script>
 
@@ -755,6 +776,7 @@
         const t = document.createElement('img');
         t.src = im.src;
         t.alt = im.label;
+        t.loading = 'lazy';
         wrap.appendChild(t);
         thumbs.appendChild(wrap);
       });
@@ -946,6 +968,7 @@
       const t = document.createElement('img');
       t.src = gfx.src;
       t.alt = gfx.label;
+      t.loading = 'lazy';
       wrap.appendChild(t);
       thumbs.appendChild(wrap);
     });

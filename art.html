@@ -8,10 +8,127 @@
     <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="./main.js"></script>
+    <style>
+        /* ── Image Modal ─────────────────────────────────────────── */
+        .img-modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(20, 20, 28, 0.88);
+            align-items: center;
+            justify-content: center;
+        }
 
+        .img-modal-backdrop.open {
+            display: flex;
+        }
+
+        .img-modal {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .img-modal img {
+            max-width: 98vw;
+            max-height: 98vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
+            display: block;
+            transition: opacity 0.18s ease;
+        }
+
+        .img-modal img.fading {
+            opacity: 0;
+        }
+
+        .modal-close {
+            position: fixed;
+            top: 20px;
+            right: 24px;
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: none;
+            color: #fff;
+            font-size: 30px;
+            line-height: 44px;
+            text-align: center;
+            cursor: pointer;
+            opacity: 0.72;
+            transition: opacity 0.15s;
+            z-index: 1200;
+            padding: 0;
+        }
+
+        .modal-close:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+            .modal-close {
+                top: 76px;
+                right: 16px;
+            }
+        }
+
+        .modal-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: none;
+            color: #fff;
+            font-size: 40px;
+            line-height: 1;
+            cursor: pointer;
+            opacity: 0.55;
+            transition: opacity 0.15s;
+            padding: 16px 20px;
+            z-index: 1001;
+            user-select: none;
+        }
+
+        .modal-nav:hover {
+            opacity: 1;
+        }
+
+        .modal-nav:disabled {
+            opacity: 0.16;
+            cursor: default;
+        }
+
+        .modal-nav.prev {
+            left: 12px;
+        }
+
+        .modal-nav.next {
+            right: 12px;
+        }
+
+        /* Make grid images show they're clickable */
+        .image-grid .grid-item img,
+        .grid-item img {
+            cursor: zoom-in;
+        }
+    </style>
 </head>
 
 <body class="art-pg">
+
+    <!-- ── Image Modal ──────────────────────────────────────────── -->
+    <div id="img-modal-backdrop" class="img-modal-backdrop" role="dialog" aria-modal="true">
+        <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+        <button class="modal-nav prev" id="modal-prev" aria-label="Previous">&#8249;</button>
+        <div class="img-modal">
+            <img id="modal-img" src="" alt="">
+        </div>
+        <button class="modal-nav next" id="modal-next" aria-label="Next">&#8250;</button>
+    </div>
+
     <div class="container">
         <nav>
             <div class="menu-container">
@@ -42,61 +159,64 @@
         </p>
         <p style="margin-bottom:50px">
             See how the design evolved over time, and the final result, in the images below.
-            <!-- It was an incredible experience collaborating with other members of the campus community to bring this
-            vision to life. Support for this mural was made possible by the Campus Murals Committee, the Division of
-            Equity & Inclusion, Division of Administration, Division of Student Affairs, and an allocation from the Big
-            C Fund. -->
         </p>
-        <div class="image-grid">
+        <div class="image-grid" data-modal-group="mural">
             <div class="grid-item">
-                <img src="./art/mural-imgs/Initial.jpg" alt="Common Threads mural contest submission">
+                <img src="./art/mural-imgs/Initial.jpg" alt="Common Threads mural contest submission"
+                    fetchpriority="high" decoding="async">
                 <p>My submission for the campus wide contest featured ten textile patterns from across the world,
                     including Indigenous tribes, serving as the environment through which the Berkeley bear walks. I
                     used student body demographics to select textile origins.</p>
             </div>
             <div class="grid-item">
-                <img src="./art/mural-imgs/Small_Quilt.jpg" alt="Common Threads mural small quilt">
+                <img src="./art/mural-imgs/Small_Quilt.jpg" alt="Common Threads mural small quilt" loading="lazy"
+                    decoding="async">
                 <p>To maximize the number of cultures I could represent, I created a quilt with 154 squares. I added
                     stitching and a folded edge, making it more realistic.</p>
             </div>
             <div class="grid-item">
                 <img src="./art/mural-imgs/Small_Geometric_Bear.jpg"
-                    alt="Common Threads mural small geometric bear design">
+                    alt="Common Threads mural small geometric bear design" loading="lazy" decoding="async">
                 <p>The committee wished to see an obvious Berkeley element, and found the original bear too cartoonish.
                     I experimented with a more realistic brown bear, Berkeley's mascot.</p>
             </div>
             <div class="grid-item">
-                <img src="./art/mural-imgs/Small_Campanile.jpg" alt="Common Threads mural small Campanile design">
+                <img src="./art/mural-imgs/Small_Campanile.jpg" alt="Common Threads mural small Campanile design"
+                    loading="lazy" decoding="async">
                 <p>The bear did not obviously represent UC Berkeley, so I experimented with campus landmarks. This one,
                     of the Campanile, represents the iconic bell tower of the university, but appeared a little awkward.
                 </p>
             </div>
             <div class="grid-item">
-                <img src="./art/mural-imgs/Long_Quilt_Sather_Gate.jpg" alt="Common Threads mural Sather Gate proposal">
+                <img src="./art/mural-imgs/Long_Quilt_Sather_Gate.jpg" alt="Common Threads mural Sather Gate proposal"
+                    loading="lazy" decoding="async">
                 <p>At this point in the design process, the dimensions of the mural were confirmed. Instead of the wall
                     I had been envisioning, it was a 70 ft by 14 ft breezeway.</p>
                 <p>Instead of the Campanile, we considered Sather Gate, but it was too intricate and messy over the
                     textile patterns.</p>
             </div>
             <div class="grid-item">
-                <img src="./art/mural-imgs/Long_Rays.jpg" alt="Common Threads rays behind Campanile sketch">
+                <img src="./art/mural-imgs/Long_Rays.jpg" alt="Common Threads rays behind Campanile sketch"
+                    loading="lazy" decoding="async">
                 <p>We went back to the Campanile, since it looked more cohesive on the longer wall. Here is a mock-up of
                     how the textiles would be arranged. The thin strips were not ideal for showcasing the patterns.</p>
             </div>
             <div class="grid-item">
                 <img src="./art/mural-imgs/Campanile_Rays.jpg"
-                    alt="Common Threads concentric rings behind Campanile design">
+                    alt="Common Threads concentric rings behind Campanile design" loading="lazy" decoding="async">
                 <p>Concentric rings felt more welcoming, but presented the same problem with visibility of patterns.</p>
             </div>
             <div class="grid-item">
-                <img src="./art/mural-imgs/Final_Gradient.jpg" alt="Common Threads final mural design with gradient">
+                <img src="./art/mural-imgs/Final_Gradient.jpg" alt="Common Threads final mural design with gradient"
+                    loading="lazy" decoding="async">
                 <p>One final option was to incorporate the blue and gold colors of the university in a gradient.
                     However, this approach detracted from the cultural textiles.</p>
             </div>
         </div>
-        <div class="image-grid" style="grid-template-columns:auto">
+        <div class="image-grid" style="grid-template-columns:auto" data-modal-group="mural">
             <div class="grid-item">
-                <img src="./art/mural-imgs/Final.jpg" alt="Common Threads final mural design">
+                <img src="./art/mural-imgs/Final.jpg" alt="Common Threads final mural design" loading="lazy"
+                    decoding="async">
                 <p style="justify-self:left">We ultimately decided to forgo any overlayed elements or gradients to
                     prioritize visibility.
                     <a href="https://drive.google.com/file/d/1tWriDBlMuKJJgLr7FQDJbH5zszKQ7ZoC/view?usp=sharing"
@@ -115,10 +235,8 @@
                         <stop offset="100%" stop-color="#7a9a6e" stop-opacity="0" />
                     </linearGradient>
                 </defs>
-                <!-- Undulating vine stem -->
                 <path d="M0,28 C60,22 110,34 170,28 C230,22 280,34 340,28 C400,22 450,34 510,28 C570,22 620,34 680,28"
                     stroke="url(#ivy-fade)" stroke-width="1.4" fill="none" stroke-linecap="round" />
-                <!-- Leaves: small filled teardrops angled off the vine -->
                 <ellipse cx="100" cy="24" rx="7" ry="4" transform="rotate(-30,100,22)" fill="#7a9a6e"
                     fill-opacity="0.45" />
                 <ellipse cx="155" cy="33" rx="7" ry="4" transform="rotate(25,155,32)" fill="#7a9a6e"
@@ -148,8 +266,9 @@
             much there is still to learn. The mural was painted in 2017 with the help of my friends, and it was an
             incredible experience to see the design come off a sheet of printer paper and onto the wall.
         </p>
-        <div class="grid-item">
-            <img src="./art/mural-imgs/kennedy.jpg" alt="John F. Kennedy Middle School mural">
+        <div class="grid-item" data-modal-group="kennedy">
+            <img src="./art/mural-imgs/kennedy.jpg" alt="John F. Kennedy Middle School mural" loading="lazy"
+                decoding="async">
         </div>
         <!-- IVY VINE CURL -->
         <div aria-hidden="true" style="max-width:680px;margin:48px auto 48px auto;">
@@ -162,10 +281,8 @@
                         <stop offset="100%" stop-color="#7a9a6e" stop-opacity="0" />
                     </linearGradient>
                 </defs>
-                <!-- Undulating vine stem -->
                 <path d="M0,28 C60,22 110,34 170,28 C230,22 280,34 340,28 C400,22 450,34 510,28 C570,22 620,34 680,28"
                     stroke="url(#ivy-fade)" stroke-width="1.4" fill="none" stroke-linecap="round" />
-                <!-- Leaves: small filled teardrops angled off the vine -->
                 <ellipse cx="100" cy="24" rx="7" ry="4" transform="rotate(-30,100,22)" fill="#7a9a6e"
                     fill-opacity="0.45" />
                 <ellipse cx="155" cy="33" rx="7" ry="4" transform="rotate(25,155,32)" fill="#7a9a6e"
@@ -193,33 +310,110 @@
             presence, and I love the way I become intimately familiar with my subject matter after spending hours lost
             in the individual brushstrokes.
         </p>
-        <div class="image-grid" style="margin-bottom: 100px">
+        <div class="image-grid" style="margin-bottom: 100px" data-modal-group="paintings">
             <div class="grid-item">
-                <img src="./art/paintings/hmc_house.jpg" alt="Howl's Moving Castle house">
+                <img src="./art/paintings/hmc_house.jpg" alt="Howl's Moving Castle house" loading="lazy"
+                    decoding="async">
             </div>
             <div class="grid-item">
-                <img src="./art/paintings/pm_komorebi.jpg" alt="Princess Mononoke komorebi">
+                <img src="./art/paintings/pm_komorebi.jpg" alt="Princess Mononoke komorebi" loading="lazy"
+                    decoding="async">
             </div>
             <div class="grid-item">
-                <img src="./art/paintings/ttr_trail.jpg" alt="Totoro nature path">
+                <img src="./art/paintings/ttr_trail.jpg" alt="Totoro nature path" loading="lazy" decoding="async">
             </div>
             <div class="grid-item">
-                <img src="./art/paintings/sa_house.jpg" alt="Spirited Away house">
+                <img src="./art/paintings/sa_house.jpg" alt="Spirited Away house" loading="lazy" decoding="async">
             </div>
             <div class="grid-item">
-                <img src="./art/paintings/lok_airtemple.jpg" alt="Legend of Korra air temple">
+                <img src="./art/paintings/lok_airtemple.jpg" alt="Legend of Korra air temple" loading="lazy"
+                    decoding="async">
             </div>
             <div class="grid-item">
-                <img src="./art/paintings/ttr_acorn.jpg" alt="Totoro mini totoro">
+                <img src="./art/paintings/ttr_acorn.jpg" alt="Totoro mini totoro" loading="lazy" decoding="async">
             </div>
-            <!-- <div class="grid-item">
-                <img src="./art/paintings/sa_sixthst.jpg" alt="Spirited Away Sixth Station">
-            </div>
-            <div class="grid-item">
-                <img src="./art/paintings/durdle.jpg" alt="Durdle Door, UK">
-            </div> -->
         </div>
     </div> <!-- art-pg -->
+
+    <script>
+        /* ── Art page image modal ─────────────────────────────────────
+           Three navigable groups:
+             "mural"    — 9 Common Threads process + final images
+             "kennedy"  — 1 Kennedy mural image (solo, no nav arrows)
+             "paintings"— 6 gouache paintings
+           Clicking any grid image opens the modal at that image's index
+           within its group, with prev/next arrows to navigate the group.
+        ─────────────────────────────────────────────────────────────── */
+        (() => {
+            const backdrop = document.getElementById('img-modal-backdrop');
+            const modalImg = document.getElementById('modal-img');
+            const btnClose = document.getElementById('modal-close');
+            const btnPrev = document.getElementById('modal-prev');
+            const btnNext = document.getElementById('modal-next');
+
+            let currentImages = [];
+            let currentIndex = 0;
+
+            function openModal(images, index) {
+                currentImages = images;
+                currentIndex = index;
+                setModalImage(index, true);
+                backdrop.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                backdrop.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            function setModalImage(idx, instant) {
+                if (!instant) modalImg.classList.add('fading');
+                setTimeout(() => {
+                    modalImg.src = currentImages[idx].src;
+                    modalImg.alt = currentImages[idx].alt || '';
+                    modalImg.classList.remove('fading');
+                    btnPrev.disabled = idx === 0;
+                    btnNext.disabled = idx === currentImages.length - 1;
+                    currentIndex = idx;
+                }, instant ? 0 : 160);
+            }
+
+            btnClose.addEventListener('click', closeModal);
+            backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+            btnPrev.addEventListener('click', () => { if (currentIndex > 0) setModalImage(currentIndex - 1); });
+            btnNext.addEventListener('click', () => { if (currentIndex < currentImages.length - 1) setModalImage(currentIndex + 1); });
+
+            document.addEventListener('keydown', e => {
+                if (!backdrop.classList.contains('open')) return;
+                if (e.key === 'Escape') closeModal();
+                if (e.key === 'ArrowLeft' && currentIndex > 0) setModalImage(currentIndex - 1);
+                if (e.key === 'ArrowRight' && currentIndex < currentImages.length - 1) setModalImage(currentIndex + 1);
+            });
+
+            // Build group image lists from data-modal-group attributes,
+            // preserving document order so groups that span multiple grids
+            // (like "mural") are collected in the right sequence.
+            const groups = {};
+            document.querySelectorAll('[data-modal-group]').forEach(container => {
+                const group = container.dataset.modalGroup;
+                if (!groups[group]) groups[group] = [];
+                container.querySelectorAll('img').forEach(img => {
+                    groups[group].push({ src: img.src, alt: img.alt, el: img });
+                });
+            });
+
+            // Attach click handlers to every image in every group
+            Object.entries(groups).forEach(([, images]) => {
+                images.forEach((item, idx) => {
+                    item.el.addEventListener('click', () => {
+                        openModal(images, idx);
+                    });
+                });
+            });
+        })();
+    </script>
+
 </body>
 
 </html>
