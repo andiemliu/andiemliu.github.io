@@ -1,47 +1,48 @@
 // Wait for the DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', function () {  
+document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('a[href]').forEach(link => {
-    const href = link.getAttribute('href');
-    // Only intercept same-site .html links, not external or PDF links
-    if (!href || href.startsWith('http') || href.startsWith('mailto') || href.endsWith('.pdf') || href.startsWith('#')) return;
+        const href = link.getAttribute('href');
+        // Only intercept same-site .html links, not external or PDF links
+        if (!href || href.startsWith('http') || href.startsWith('mailto') || href.endsWith('.pdf') || href.startsWith('#')) return;
 
-    link.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.body.style.transition = 'opacity 0.25s ease';
-        document.body.style.opacity = '0';
-        setTimeout(() => { window.location.href = href; }, 260);
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.body.style.transition = 'opacity 0.25s ease';
+            document.body.style.opacity = '0';
+            setTimeout(() => { window.location.href = href; }, 260);
+        });
     });
-});
 
     // Get the container element
     const container = document.querySelector('body');
-    
+
     // Elements that need to match the dynamic background color
     const menuTab = document.querySelector('.menu-container');
     const footerEl = document.querySelector('footer');
 
     container.addEventListener('mousemove', (event) => {
-    // Get the mouse's X and Y coordinates
-    const mouseX = event.clientX / window.innerWidth;
-    const mouseY = event.clientY / window.innerHeight;
+        // Get the mouse's X and Y coordinates
+        const mouseX = event.clientX / window.innerWidth;
+        const mouseY = event.clientY / window.innerHeight;
 
-    // Calculate RGB values based on mouse coordinates
-    const r = Math.floor(200 + mouseX * 10);
-    const g = Math.floor(200 + mouseY * 35);
-    const b = 230;
+        // Calculate RGB values based on mouse coordinates
+        const r = Math.floor(200 + mouseX * 10);
+        const g = Math.floor(200 + mouseY * 35);
+        const b = 230;
 
-    const bgColor = `rgb(${r}, ${g}, ${b})`;
+        const bgColor = `rgb(${r}, ${g}, ${b})`;
 
-    // Update the background color with the calculated RGB values
-    container.style.backgroundColor = bgColor;
+        // Update the background color with the calculated RGB values
+        container.style.backgroundColor = bgColor;
 
-    // Keep menu tab and footer in sync with background
-    if (menuTab) menuTab.style.backgroundColor = bgColor;
-    if (footerEl && document.body.classList.contains('home-pg')) {
-        footerEl.style.backgroundColor = bgColor;
-    }});
+        // Keep menu tab and footer in sync with background
+        if (menuTab) menuTab.style.backgroundColor = bgColor;
+        if (footerEl && document.body.classList.contains('home-pg')) {
+            footerEl.style.backgroundColor = bgColor;
+        }
+    });
 
-    
+
 
     // add class navbarDark on navbar scroll
     const menu = document.querySelector('.menu-container');
@@ -61,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     let menuWasHiddenByScroll = false;
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', function () {
         var top = window.scrollY;
         // Only add background if menu is revealed by mouse after scrolling
         if (top >= 40) {
@@ -84,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Show menu when mouse is near the top (within 60px)
-    document.addEventListener('mousemove', function(e) {
+    document.addEventListener('mousemove', function (e) {
         if (e.clientY < 60) {
             if (!menuVisible) showMenu();
             if (hideTimeout) clearTimeout(hideTimeout);
@@ -99,14 +100,14 @@ document.addEventListener('DOMContentLoaded', function () {
             hideTimeout = setTimeout(hideMenu, 400);
         }
     });
-    
+
     const leftContainer = document.querySelector('.left-container');
     const rightContainer = document.querySelector('.right-container');
     const wait = (time) => new Promise((resolve) => setTimeout(resolve, time));
     const responsePromise = wait(100);
     if (leftContainer && rightContainer) {
         responsePromise.then(() => leftContainer.style.opacity = 1).then(() => wait(90))
-        .then(() => rightContainer.style.opacity = 1).then(() => wait(90));
+            .then(() => rightContainer.style.opacity = 1).then(() => wait(90));
     }
     responsePromise.then(() => menu.style.opacity = 1);
 });

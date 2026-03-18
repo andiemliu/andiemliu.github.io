@@ -1,98 +1,121 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="description" content="Andie Liu Media">
-        <meta name="author" content="Andie Liu">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Media — Andie Liu</title>
-        <link rel="stylesheet" href="./styles.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <script src="./main.js"></script>
-    </head>
-    <body class="media-pg">
-        <div class="container">
-            <nav>
-                <div class="menu-container">
-                    <ul class="menu">
-                        <li><a href="./index.html">About</a></li>
-                        <li><a href="./writing.html">Writing</a></li>
-                        <li><a href="./art.html">Art</a></li>
-                        <li><a href="./design.html">Design</a></li>
-                        <li><a href="./media.html" class="active">Media</a></li>
-                        <li><a href="./contact.html">Contact</a></li>
-                    </ul>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Andie Liu Media">
+    <meta name="author" content="Andie Liu">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media — Andie Liu</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="./main.js"></script>
+</head>
+
+<body class="media-pg">
+    <div class="container">
+        <nav>
+            <div class="menu-container">
+                <ul class="menu">
+                    <li><a href="./index.html">About</a></li>
+                    <li><a href="./writing.html">Writing</a></li>
+                    <li><a href="./art.html">Art</a></li>
+                    <li><a href="./design.html">Design</a></li>
+                    <li><a href="./media.html" class="active">Media</a></li>
+                    <li><a href="./contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="media-container">
+            <h1>Media</h1>
+
+            <!-- ── PODCAST ─────────────────────────────────────────── -->
+            <section class="media-section">
+                <h2 class="media-section-title">Podcast</h2>
+
+                <div class="media-item">
+                    <div class="media-text">
+                        <h3 class="media-title">Lofi beats to talk about and listen to</h3>
+                        <p class="media-context">
+                            Why has lofi become so popular among Monta Vista High School students? What makes a track a
+                            lofi track? Senior Conner Yin and junior Matthew Sun, who produce and remix their own lofi
+                            tracks, and sophomore Priscilla Cho and senior Eugene Yoon, two avid listeners of lofi,
+                            share what makes lofi so comforting and unique.
+                        </p>
+                    </div>
+                    <div class="media-embed">
+                        <iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay"
+                            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A916875460&color=%23236e7b&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
+                        </iframe>
+                    </div>
                 </div>
-            </nav>
+            </section>
 
-            <div class="media-container">
-                <h1>Media</h1>
+            <!-- ── VIDEOS ──────────────────────────────────────────── -->
+            <section class="media-section">
+                <h2 class="media-section-title">Video</h2>
 
-                <!-- ── PODCAST ─────────────────────────────────────────── -->
-                <section class="media-section">
-                    <h2 class="media-section-title">Podcast</h2>
-
-                    <div class="media-item">
-                        <div class="media-text">
-                            <h3 class="media-title">Lofi beats to talk about and listen to</h3>
-                            <p class="media-context">
-                                Why has lofi become so popular among Monta Vista High School students? What makes a track a lofi track? Senior Conner Yin and junior Matthew Sun, who produce and remix their own lofi tracks, and sophomore Priscilla Cho and senior Eugene Yoon, two avid listeners of lofi, share what makes lofi so comforting and unique.
-                            </p>
-                        </div>
-                        <div class="media-embed">
-                            <iframe 
-                                width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" 
-                                src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/soundcloud%253Atracks%253A916875460&color=%23236e7b&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true">
-                            </iframe>
-                        </div>
+                <!-- VIDEO 1: Man on the street -->
+                <div class="media-item">
+                    <div class="media-text">
+                        <h3 class="media-title">What's the Nicest Thing a Friend or Stranger has Done for You?</h3>
+                        <p class="media-context">
+                            Nine students tell us about acts of kindness they've experienced for National Good Samaritan
+                            Day, March 13.
+                        </p>
                     </div>
-                </section>
-
-                <!-- ── VIDEOS ──────────────────────────────────────────── -->
-                <section class="media-section">
-                    <h2 class="media-section-title">Video</h2>
-
-                    <!-- VIDEO 1: Man on the street -->
-                    <div class="media-item">
-                        <div class="media-text">
-                            <h3 class="media-title">What's the Nicest Thing a Friend or Stranger has Done for You?</h3>
-                            <p class="media-context">
-                                Nine students tell us about acts of kindness they've experienced for National Good Samaritan Day, March 13.
-                            </p>
-                        </div>
-                        <div class="media-embed media-embed-video">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/_FO1yZHpleg?si=1PFXtoIyU9ksswNH" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>                            <!-- Replace the src above with your actual YouTube embed URL -->
-                        </div>
+                    <div class="media-embed media-embed-video">
+                        <iframe width="560" height="315"
+                            src="https://www.youtube.com/embed/_FO1yZHpleg?si=1PFXtoIyU9ksswNH"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        <!-- Replace the src above with your actual YouTube embed URL -->
                     </div>
+                </div>
 
-                    <!-- VIDEO 2: Reaction video -->
-                    <div class="media-item">
-                        <div class="media-text">
-                            <h3 class="media-title">Sandy Hook Promise Ad Reaction</h3>
-                            <p class="media-context">
-                                MVHS students and staff react to non profit Sandy Hook Promise's back to school ad “Back-To-School Essentials.”
-                            </p>
-                        </div>
-                        <div class="media-embed media-embed-video">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/7tyW2o6s254?si=rYTSvGd5Y0XFCFR7" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                        </div>
+                <!-- VIDEO 2: Reaction video -->
+                <div class="media-item">
+                    <div class="media-text">
+                        <h3 class="media-title">Sandy Hook Promise Ad Reaction</h3>
+                        <p class="media-context">
+                            MVHS students and staff react to non profit Sandy Hook Promise's back to school ad
+                            “Back-To-School Essentials.”
+                        </p>
                     </div>
-
-                    <!-- VIDEO 3: Documentary -->
-                    <div class="media-item">
-                        <div class="media-text">
-                            <h3 class="media-title">Team Sports vs. Individual Sports</h3>
-                            <p class="media-context">
-                                In this documentary, my group explored the differences between team sports and individual sports, and how they impact athletes' mental health and social connections. We interviewed athletes from both types of sports to understand their experiences and perspectives.
-                            </p>
-                        </div>
-                        <div class="media-embed media-embed-video">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/wKTD92mQVW4?si=-xzMtJZgUa7IXH-A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>                        </div>
-                        </div>
+                    <div class="media-embed media-embed-video">
+                        <iframe width="560" height="315"
+                            src="https://www.youtube.com/embed/7tyW2o6s254?si=rYTSvGd5Y0XFCFR7"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
+                </div>
 
-                </section>
-            </div><!-- /.media-container -->
-        </div><!-- /.container -->
-    </body>
+                <!-- VIDEO 3: Documentary -->
+                <div class="media-item">
+                    <div class="media-text">
+                        <h3 class="media-title">Team Sports vs. Individual Sports</h3>
+                        <p class="media-context">
+                            In this documentary, my group explored the differences between team sports and individual
+                            sports, and how they impact athletes' mental health and social connections. We interviewed
+                            athletes from both types of sports to understand their experiences and perspectives.
+                        </p>
+                    </div>
+                    <div class="media-embed media-embed-video">
+                        <iframe width="560" height="315"
+                            src="https://www.youtube.com/embed/wKTD92mQVW4?si=-xzMtJZgUa7IXH-A"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+        </div>
+
+        </section>
+    </div><!-- /.media-container -->
+    </div><!-- /.container -->
+</body>
+
 </html>

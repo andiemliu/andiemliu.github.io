@@ -1,286 +1,396 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="Andie Liu Design Portfolio">
-    <meta name="keywords" content="design, portfolio, zine, art, andie liu">
-    <meta name="author" content="Andie Liu">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design Portfolio - Andie Liu</title>
-    <link rel="stylesheet" href="./styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <script src="./main.js"></script>
-    <style>
-      /* ── PDF Viewer ──────────────────────────────────────────── */
-      .pdf-viewer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 14px;
-        /* fill the viewport: subtract nav (~60px), heading (~100px), controls+thumbs (~120px) */
-        height: calc(100vh - 280px);
-        min-height: 400px;
-      }
 
-      /* Stage grows to fill available space in the flex column */
-      .pdf-stage {
-        position: relative;
-        width: 100%;
-        flex: 1;                /* take all remaining vertical space */
-        min-height: 0;          /* allow flex shrink below content size */
-        /* background: #f0ece6; */
-        border-radius: 6px;
-        /* box-shadow: 0 4px 24px rgba(0,0,0,0.13); */
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Andie Liu Design Portfolio">
+  <meta name="keywords" content="design, portfolio, zine, art, andie liu">
+  <meta name="author" content="Andie Liu">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Portfolio - Andie Liu</title>
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="./main.js"></script>
+  <style>
+    /* ── PDF Viewer ──────────────────────────────────────────── */
+    .pdf-viewer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      /* fill the viewport: subtract nav (~60px), heading (~100px), controls+thumbs (~120px) */
+      height: calc(100vh - 280px);
+      min-height: 400px;
+    }
 
-      /* Fade transition wrapper */
-      .pdf-stage-inner {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0;
-        transition: opacity 0.22s ease;
-      }
-      .pdf-stage-inner.fading { opacity: 0; }
+    /* Stage grows to fill available space in the flex column */
+    .pdf-stage {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      /* take all remaining vertical space */
+      min-height: 0;
+      /* allow flex shrink below content size */
+      /* background: #f0ece6; */
+      border-radius: 6px;
+      /* box-shadow: 0 4px 24px rgba(0,0,0,0.13); */
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
 
-      .pdf-stage canvas {
-        display: block;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-      }
+    /* Fade transition wrapper */
+    .pdf-stage-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      transition: opacity 0.22s ease;
+    }
 
-      /* Arrow nav buttons */
-      .pdf-controls {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        user-select: none;
-      }
+    .pdf-stage-inner.fading {
+      opacity: 0;
+    }
 
-      .round-btn {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        border: none;
-        background: #fff;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.13);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: background 0.15s, transform 0.1s;
-        flex-shrink: 0;
-      }
-      .round-btn:hover  { background: #f5f5f5; transform: scale(1.07); }
-      .round-btn:active { transform: scale(0.95); }
-      .round-btn:disabled { opacity: 0.35; cursor: default; transform: none; }
+    .pdf-stage canvas {
+      display: block;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    }
 
-      #page-info {
-        font-size: 0.92rem;
-        letter-spacing: 0.03em;
-        min-width: 80px;
-        text-align: center;
-        color: #555;
-      }
+    /* Arrow nav buttons */
+    .pdf-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      user-select: none;
+    }
 
-      /* Thumbnail strip */
-      .pdf-thumbs {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        justify-content: center;
-        max-width: 900px;
-      }
-      .pdf-thumb {
-        width: 52px;
-        height: 72px;
-        border-radius: 3px;
-        border: 2px solid transparent;
-        cursor: pointer;
-        overflow: hidden;
-        background: #e8e2da;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-        transition: border-color 0.15s, transform 0.12s;
-        flex-shrink: 0;
-      }
-      .pdf-thumb:hover            { transform: scale(1.08); }
-      .pdf-thumb.active           { border-color: #888; }
-      .pdf-thumb canvas           { width: 100%; height: 100%; display: block; }
+    .round-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.13);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, transform 0.1s;
+      flex-shrink: 0;
+    }
 
-      /* ── Image Carousel ─────────────────────────────────────── */
-      .img-carousel {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 14px;
-        height: calc(100vh - 280px);
-        min-height: 400px;
-        margin-top: 10px;
-      }
+    .round-btn:hover {
+      background: #f5f5f5;
+      transform: scale(1.07);
+    }
 
-      .img-stage {
-        position: relative;
-        width: 100%;
-        flex: 1;
-        min-height: 0;
-        border-radius: 6px;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    .round-btn:active {
+      transform: scale(0.95);
+    }
 
-      .img-stage-inner {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: opacity 0.22s ease;
-      }
-      .img-stage-inner.fading { opacity: 0; }
+    .round-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+      transform: none;
+    }
 
-      .img-stage img {
-        max-width: calc(100% - 48px);
-        max-height: calc(100% - 48px);
-        object-fit: contain;
-        box-shadow: 0 2px 12px rgba(0,0,0,0.18);
-        border-radius: 3px;
-      }
+    #page-info {
+      font-size: 0.92rem;
+      letter-spacing: 0.03em;
+      min-width: 80px;
+      text-align: center;
+      color: #555;
+    }
 
-      /* Thumbnail strip for carousel */
-      .img-thumbs {
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        justify-content: center;
-        max-width: 900px;
-      }
-      .img-thumb {
-        width: 64px;
-        height: 52px;
-        border-radius: 3px;
-        border: 2px solid transparent;
-        cursor: pointer;
-        overflow: hidden;
-        box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-        transition: border-color 0.15s, transform 0.12s;
-        flex-shrink: 0;
-        background: #e8e2da;
-      }
-      .img-thumb:hover     { transform: scale(1.08); }
-      .img-thumb.active    { border-color: #888; }
-      .img-thumb img       { width: 100%; height: 100%; object-fit: cover; display: block; }
-    </style>
-  </head>
-  <body class="design-pg">
-    <div class="container">
-      <nav>
-        <div class="menu-container" style="opacity:1;">
-          <ul class="menu">
-            <li><a href="./index.html">About</a></li>
-            <li><a href="./writing.html">Writing</a></li>
-            <li><a href="./art.html">Art</a></li>
-            <li><a href="./design.html" class="active">Design</a></li>
-            <li><a href="./media.html">Media</a></li>
-            <li><a href="./contact.html">Contact</a></li>
-          </ul>
-        </div>
-      </nav>
+    /* Thumbnail strip */
+    .pdf-thumbs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 900px;
+    }
 
-      <div class="design-container">
-        <h1>Design</h1>
-        <section>
-            <p>Design has been a thread through many of the communities I've worked in, from laying out page spreads as a student journalist to creating flyers and social media graphics for library events. I'm drawn to design that clarifies ideas and invites people in. This page includes editorial layouts, event graphics, and a zine exploring my final semester at Berkeley through a German philosophy lens.</p>
-          <h2 style="justify-self: center;">[eigen/trans]formation</h2>
-                  <p>In German, eigen means "self." This zine explores how self formation <em>is</em> transformation through a personal reflection on an Ideas of Education course, where I dived into complex philosophies of Goethe, Schiller, Hegel, and other German thinkers.
-        The main idea of the course, <em>bildung</em>, is a German word that refers to the process of self-cultivation and education. The works of these thinkers fundamentally disoriented my understanding of the self, education via <em>bildung</em>, and alienation in a modern world.</p>
+    .pdf-thumb {
+      width: 52px;
+      height: 72px;
+      border-radius: 3px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      overflow: hidden;
+      background: #e8e2da;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      transition: border-color 0.15s, transform 0.12s;
+      flex-shrink: 0;
+    }
 
-          <div class="pdf-viewer">
-            <!-- Fixed-size stage -->
-            <div class="pdf-stage" id="pdf-stage" title="Click to open PDF">
-              <div class="pdf-stage-inner" id="pdf-stage-inner">
-                <!-- canvases injected by JS -->
-              </div>
-            </div>
+    .pdf-thumb:hover {
+      transform: scale(1.08);
+    }
 
-            <!-- Prev / page-info / Next -->
-            <div class="pdf-controls">
-              <button id="prev-page" class="round-btn" aria-label="Previous page" disabled>
-                <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                  <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5"
-                    stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-              </button>
-              <span id="page-info">1 / ?</span>
-              <button id="next-page" class="round-btn" aria-label="Next page">
-                <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                  <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5"
-                    stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-              </button>
-            </div>
+    .pdf-thumb.active {
+      border-color: #888;
+    }
 
-            <!-- Thumbnail strip -->
-            <div class="pdf-thumbs" id="pdf-thumbs"></div>
+    .pdf-thumb canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
 
-          </div><!-- /.pdf-viewer -->
-        </section>
+    /* ── Image Carousel ─────────────────────────────────────── */
+    .img-carousel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      height: calc(100vh - 280px);
+      min-height: 400px;
+      margin-top: 10px;
+    }
 
-        <section style="margin-top: 80px;">
-          <h2 style="justify-self: center;">Newsmagazine Page Designs</h2>
-          <p>While I was a student journalist, I had the opportunity to lay out page spreads for our campus publication. These designs reflect my approach to combining visual elements with written content to create engaging narratives.</p>
-          <div class="img-carousel">
+    .img-stage {
+      position: relative;
+      width: 100%;
+      flex: 1;
+      min-height: 0;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-            <div class="img-stage" id="img-stage">
-              <div class="img-stage-inner" id="img-stage-inner">
-                <img id="carousel-img" src="" alt="">
-              </div>
-            </div>
+    .img-stage-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.22s ease;
+    }
 
-            <div class="pdf-controls">
-              <button id="img-prev" class="round-btn" aria-label="Previous image" disabled>
-                <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                  <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5"
-                    stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-              </button>
-              <span id="img-info" style="font-size:0.92rem;letter-spacing:0.03em;min-width:80px;text-align:center;color:#555;">1 / 6</span>
-              <button id="img-next" class="round-btn" aria-label="Next image">
-                <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                  <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5"
-                    stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-                </svg>
-              </button>
-            </div>
+    .img-stage-inner.fading {
+      opacity: 0;
+    }
 
-            <div class="img-thumbs" id="img-thumbs"></div>
-             <div style="height: 80px;"></div> <!-- Spacer to prevent footer overlap -->
-        </section>
-        <!-- Add more design portfolio items below as needed -->
+    .img-stage img {
+      max-width: calc(100% - 48px);
+      max-height: calc(100% - 48px);
+      object-fit: contain;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+      border-radius: 3px;
+    }
+
+    /* Thumbnail strip for carousel */
+    .img-thumbs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 900px;
+    }
+
+    .img-thumb {
+      width: 64px;
+      height: 52px;
+      border-radius: 3px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      transition: border-color 0.15s, transform 0.12s;
+      flex-shrink: 0;
+      background: #e8e2da;
+    }
+
+    .img-thumb:hover {
+      transform: scale(1.08);
+    }
+
+    .img-thumb.active {
+      border-color: #888;
+    }
+
+    .img-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  </style>
+</head>
+
+<body class="design-pg">
+  <div class="container">
+    <nav>
+      <div class="menu-container" style="opacity:1;">
+        <ul class="menu">
+          <li><a href="./index.html">About</a></li>
+          <li><a href="./writing.html">Writing</a></li>
+          <li><a href="./art.html">Art</a></li>
+          <li><a href="./design.html" class="active">Design</a></li>
+          <li><a href="./media.html">Media</a></li>
+          <li><a href="./contact.html">Contact</a></li>
+        </ul>
       </div>
-    </div>
+    </nav>
 
-    <script>
+    <div class="design-container">
+      <h1>Design</h1>
+      <section>
+        <p>Design has been a thread through many of the communities I've worked in, from laying out page spreads as a
+          student journalist to creating flyers and social media graphics for library events. I'm drawn to design that
+          clarifies ideas and invites people in. This page includes editorial layouts, event graphics, and a zine
+          exploring my final semester at Berkeley through a German philosophy lens.</p>
+        <!-- IVY VINE CURL -->
+        <div aria-hidden="true" style="max-width:680px;margin:48px auto 48px auto;">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 56" width="100%" height="56">
+            <defs>
+              <linearGradient id="ivy-fade" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#7a9a6e" stop-opacity="0" />
+                <stop offset="10%" stop-color="#7a9a6e" stop-opacity="0.8" />
+                <stop offset="90%" stop-color="#7a9a6e" stop-opacity="0.8" />
+                <stop offset="100%" stop-color="#7a9a6e" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+            <!-- Undulating vine stem -->
+            <path d="M0,28 C60,22 110,34 170,28 C230,22 280,34 340,28 C400,22 450,34 510,28 C570,22 620,34 680,28"
+              stroke="url(#ivy-fade)" stroke-width="1.4" fill="none" stroke-linecap="round" />
+            <!-- Leaves: small filled teardrops angled off the vine -->
+            <ellipse cx="100" cy="24" rx="7" ry="4" transform="rotate(-30,100,22)" fill="#7a9a6e" fill-opacity="0.45" />
+            <ellipse cx="155" cy="33" rx="7" ry="4" transform="rotate(25,155,32)" fill="#7a9a6e" fill-opacity="0.38" />
+            <ellipse cx="210" cy="22" rx="8" ry="4" transform="rotate(-20,210,22)" fill="#7a9a6e" fill-opacity="0.45" />
+            <ellipse cx="270" cy="33" rx="7" ry="4" transform="rotate(30,270,32)" fill="#7a9a6e" fill-opacity="0.38" />
+            <ellipse cx="340" cy="23" rx="8" ry="5" transform="rotate(-25,340,22)" fill="#7a9a6e" fill-opacity="0.5" />
+            <ellipse cx="405" cy="32" rx="7" ry="4" transform="rotate(28,405,32)" fill="#7a9a6e" fill-opacity="0.38" />
+            <ellipse cx="460" cy="25" rx="8" ry="4" transform="rotate(-22,460,22)" fill="#7a9a6e" fill-opacity="0.45" />
+            <ellipse cx="520" cy="32" rx="7" ry="4" transform="rotate(26,520,32)" fill="#7a9a6e" fill-opacity="0.38" />
+            <ellipse cx="578" cy="22" rx="7" ry="4" transform="rotate(-28,578,22)" fill="#7a9a6e" fill-opacity="0.38" />
+          </svg>
+        </div>
+
+        <h2 style="justify-self: center;">[eigen/trans]formation</h2>
+        <p>In German, eigen means "self." This zine explores how self formation <em>is</em> transformation through a
+          personal reflection on an Ideas of Education course, where I dived into complex philosophies of Goethe,
+          Schiller, Hegel, and other German thinkers.
+          The main idea of the course, <em>bildung</em>, is a German word that refers to the process of self-cultivation
+          and education. The works of these thinkers fundamentally disoriented my understanding of the self, education
+          via <em>bildung</em>, and alienation in a modern world.</p>
+
+        <div class="pdf-viewer">
+          <!-- Fixed-size stage -->
+          <div class="pdf-stage" id="pdf-stage" title="Click to open PDF">
+            <div class="pdf-stage-inner" id="pdf-stage-inner">
+              <!-- canvases injected by JS -->
+            </div>
+          </div>
+
+          <!-- Prev / page-info / Next -->
+          <div class="pdf-controls">
+            <button id="prev-page" class="round-btn" aria-label="Previous page" disabled>
+              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
+                  stroke-linejoin="round" fill="none" />
+              </svg>
+            </button>
+            <span id="page-info">1 / ?</span>
+            <button id="next-page" class="round-btn" aria-label="Next page">
+              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
+                  stroke-linejoin="round" fill="none" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Thumbnail strip -->
+          <div class="pdf-thumbs" id="pdf-thumbs"></div>
+
+        </div><!-- /.pdf-viewer -->
+      </section>
+
+      <!-- PAGE DESIGN DIVIDER -->
+      <div aria-hidden="true" style="max-width:680px;margin:84px auto 32px auto;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 56" width="100%" height="56">
+          <defs>
+            <linearGradient id="ivy-fade" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#7a9a6e" stop-opacity="0" />
+              <stop offset="10%" stop-color="#7a9a6e" stop-opacity="0.8" />
+              <stop offset="90%" stop-color="#7a9a6e" stop-opacity="0.8" />
+              <stop offset="100%" stop-color="#7a9a6e" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <!-- Undulating vine stem -->
+          <path d="M0,28 C60,22 110,34 170,28 C230,22 280,34 340,28 C400,22 450,34 510,28 C570,22 620,34 680,28"
+            stroke="url(#ivy-fade)" stroke-width="1.4" fill="none" stroke-linecap="round" />
+          <!-- Leaves: small filled teardrops angled off the vine -->
+          <ellipse cx="100" cy="24" rx="7" ry="4" transform="rotate(-30,100,22)" fill="#7a9a6e" fill-opacity="0.45" />
+          <ellipse cx="155" cy="33" rx="7" ry="4" transform="rotate(25,155,32)" fill="#7a9a6e" fill-opacity="0.38" />
+          <ellipse cx="210" cy="22" rx="8" ry="4" transform="rotate(-20,210,22)" fill="#7a9a6e" fill-opacity="0.45" />
+          <ellipse cx="270" cy="33" rx="7" ry="4" transform="rotate(30,270,32)" fill="#7a9a6e" fill-opacity="0.38" />
+          <ellipse cx="340" cy="23" rx="8" ry="5" transform="rotate(-25,340,22)" fill="#7a9a6e" fill-opacity="0.5" />
+          <ellipse cx="405" cy="32" rx="7" ry="4" transform="rotate(28,405,32)" fill="#7a9a6e" fill-opacity="0.38" />
+          <ellipse cx="460" cy="25" rx="8" ry="4" transform="rotate(-22,460,22)" fill="#7a9a6e" fill-opacity="0.45" />
+          <ellipse cx="520" cy="32" rx="7" ry="4" transform="rotate(26,520,32)" fill="#7a9a6e" fill-opacity="0.38" />
+          <ellipse cx="578" cy="22" rx="7" ry="4" transform="rotate(-28,578,22)" fill="#7a9a6e" fill-opacity="0.38" />
+        </svg>
+      </div>
+      <section>
+        <h2 style="justify-self: center;">Newsmagazine Page Designs</h2>
+        <p>While I was a student journalist, I had the opportunity to lay out page spreads for our campus publication.
+          These designs reflect my approach to combining visual elements with written content to create engaging
+          narratives.</p>
+        <div class="img-carousel">
+
+          <div class="img-stage" id="img-stage">
+            <div class="img-stage-inner" id="img-stage-inner">
+              <img id="carousel-img" src="" alt="">
+            </div>
+          </div>
+
+          <div class="pdf-controls">
+            <button id="img-prev" class="round-btn" aria-label="Previous image" disabled>
+              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
+                  stroke-linejoin="round" fill="none" />
+              </svg>
+            </button>
+            <span id="img-info"
+              style="font-size:0.92rem;letter-spacing:0.03em;min-width:80px;text-align:center;color:#555;">1 / 6</span>
+            <button id="img-next" class="round-btn" aria-label="Next image">
+              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
+                  stroke-linejoin="round" fill="none" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="img-thumbs" id="img-thumbs"></div>
+          <div style="height: 80px;"></div> <!-- Spacer to prevent footer overlap -->
+      </section>
+      <!-- Add more design portfolio items below as needed -->
+    </div>
+  </div>
+
+  <script>
     (() => {
       const PDF_URL = './design/eigenformation-zine.pdf';
       const PADDING = 24;
 
-      let pdfDoc    = null;
-      let pageNum   = 1;
+      let pdfDoc = null;
+      let pageNum = 1;
       let rendering = false;
 
-      const stage    = document.getElementById('pdf-stage');
-      const inner    = document.getElementById('pdf-stage-inner');
-      const prevBtn  = document.getElementById('prev-page');
-      const nextBtn  = document.getElementById('next-page');
+      const stage = document.getElementById('pdf-stage');
+      const inner = document.getElementById('pdf-stage-inner');
+      const prevBtn = document.getElementById('prev-page');
+      const nextBtn = document.getElementById('next-page');
       const pageInfo = document.getElementById('page-info');
       const thumbsEl = document.getElementById('pdf-thumbs');
 
@@ -293,7 +403,7 @@
         const stageH = stage.clientHeight;
 
         const page = await pdfDoc.getPage(num);
-        const vp1  = page.getViewport({ scale: 1 });
+        const vp1 = page.getViewport({ scale: 1 });
         const scale = Math.min(
           (stageW - PADDING * 2) / vp1.width,
           (stageH - PADDING * 2) / vp1.height
@@ -306,16 +416,16 @@
 
         inner.innerHTML = '';
         const cvs = document.createElement('canvas');
-        cvs.width  = Math.round(vp.width);
+        cvs.width = Math.round(vp.width);
         cvs.height = Math.round(vp.height);
         inner.appendChild(cvs);
         await page.render({ canvasContext: cvs.getContext('2d'), viewport: vp }).promise;
 
         inner.classList.remove('fading');
 
-        pageInfo.textContent   = `${num} / ${pdfDoc.numPages}`;
-        prevBtn.disabled       = num === 1;
-        nextBtn.disabled       = num === pdfDoc.numPages;
+        pageInfo.textContent = `${num} / ${pdfDoc.numPages}`;
+        prevBtn.disabled = num === 1;
+        nextBtn.disabled = num === pdfDoc.numPages;
 
         document.querySelectorAll('.pdf-thumb').forEach((t, i) =>
           t.classList.toggle('active', i === num - 1));
@@ -336,17 +446,17 @@
 
           const pg = await pdfDoc.getPage(i);
           const vp = pg.getViewport({ scale: 0.12 });
-          cvs.width  = Math.round(vp.width);
+          cvs.width = Math.round(vp.width);
           cvs.height = Math.round(vp.height);
           await pg.render({ canvasContext: cvs.getContext('2d'), viewport: vp }).promise;
         }
       }
 
-      prevBtn.addEventListener('click', () => { if (pageNum > 1)                  { pageNum--; renderPage(pageNum); } });
-      nextBtn.addEventListener('click', () => { if (pageNum < pdfDoc.numPages)    { pageNum++; renderPage(pageNum); } });
-      stage.addEventListener('click',   () => window.open(PDF_URL, '_blank'));
+      prevBtn.addEventListener('click', () => { if (pageNum > 1) { pageNum--; renderPage(pageNum); } });
+      nextBtn.addEventListener('click', () => { if (pageNum < pdfDoc.numPages) { pageNum++; renderPage(pageNum); } });
+      stage.addEventListener('click', () => window.open(PDF_URL, '_blank'));
       document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowLeft'  && pageNum > 1)               { pageNum--; renderPage(pageNum); }
+        if (e.key === 'ArrowLeft' && pageNum > 1) { pageNum--; renderPage(pageNum); }
         if (e.key === 'ArrowRight' && pageNum < pdfDoc.numPages) { pageNum++; renderPage(pageNum); }
       });
 
@@ -366,28 +476,28 @@
         buildThumbs();
       });
     })();
-    </script>
+  </script>
 
-    <script>
+  <script>
     (() => {
       const IMAGES = [
         { src: './design/page-designs/entrepreneurs-1.png', label: 'Entrepreneurs 1' },
         { src: './design/page-designs/entrepreneurs-2.png', label: 'Entrepreneurs 2' },
-        { src: './design/page-designs/feminism.jpg',        label: 'Feminism Survey' },
-        { src: './design/page-designs/masculinity.jpg',     label: 'Masculinity Survey' },
-        { src: './design/page-designs/process.jpg',         label: 'Process' },
-        { src: './design/page-designs/return-in-person.jpg',label: 'Return in Person Survey' },
+        { src: './design/page-designs/feminism.jpg', label: 'Feminism Survey' },
+        { src: './design/page-designs/masculinity.jpg', label: 'Masculinity Survey' },
+        { src: './design/page-designs/process.jpg', label: 'Process' },
+        { src: './design/page-designs/return-in-person.jpg', label: 'Return in Person Survey' },
       ];
 
-      let current  = 0;
-      let fading   = false;
+      let current = 0;
+      let fading = false;
 
-      const inner   = document.getElementById('img-stage-inner');
-      const img     = document.getElementById('carousel-img');
+      const inner = document.getElementById('img-stage-inner');
+      const img = document.getElementById('carousel-img');
       const prevBtn = document.getElementById('img-prev');
       const nextBtn = document.getElementById('img-next');
-      const info    = document.getElementById('img-info');
-      const thumbs  = document.getElementById('img-thumbs');
+      const info = document.getElementById('img-info');
+      const thumbs = document.getElementById('img-thumbs');
 
       function showImage(idx, instant) {
         if (fading) return;
@@ -419,12 +529,13 @@
         thumbs.appendChild(wrap);
       });
 
-      prevBtn.addEventListener('click', () => { if (current > 0)                   { current--; showImage(current); } });
-      nextBtn.addEventListener('click', () => { if (current < IMAGES.length - 1)   { current++; showImage(current); } });
+      prevBtn.addEventListener('click', () => { if (current > 0) { current--; showImage(current); } });
+      nextBtn.addEventListener('click', () => { if (current < IMAGES.length - 1) { current++; showImage(current); } });
 
       // Show first image immediately
       showImage(0, true);
     })();
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
