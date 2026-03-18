@@ -30,8 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
         hamburgerBtn.classList.add('is-open');
         overlay.classList.add('is-open');
         document.body.style.overflow = 'hidden';
-        // Sync overlay background with current body color
-        overlay.style.backgroundColor = window.getComputedStyle(document.body).backgroundColor;
     }
 
     function closeOverlay() {
@@ -62,16 +60,15 @@ document.addEventListener('DOMContentLoaded', function () {
     //   call window.hamburgerModalClose()       when a modal closes
     window.hamburgerModalOpen = function (closeFn) {
         modalCloseFn = closeFn;
-        hamburgerBtn.classList.add('is-open');   // animates to ✕
+        hamburgerBtn.classList.add('is-open');
         document.body.classList.add('modal-is-open');
-        // Keep the box bg in sync with the current dynamic body color
-        hamburgerBtn.style.backgroundColor = window.getComputedStyle(document.body).backgroundColor;
+        hamburgerBtn.style.backgroundColor = '#eff2ee';
     };
     window.hamburgerModalClose = function () {
         modalCloseFn = null;
-        hamburgerBtn.classList.remove('is-open'); // animates back to ≡
+        hamburgerBtn.classList.remove('is-open');
         document.body.classList.remove('modal-is-open');
-        hamburgerBtn.style.backgroundColor = '';  // revert to CSS default (none)
+        hamburgerBtn.style.backgroundColor = '';
     };
 
     // Close overlay when a nav link is tapped
@@ -120,63 +117,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         link.addEventListener('click', function (e) {
             e.preventDefault();
-            // Freeze current background so it doesn't shift during fade-out
-            const currentBg = window.getComputedStyle(document.body).backgroundColor;
             document.body.style.transition = 'opacity 0.25s ease';
-            document.body.style.backgroundColor = currentBg;
-            if (menuTab) menuTab.style.backgroundColor = currentBg;
             document.body.style.opacity = '0';
             setTimeout(() => { window.location.href = href; }, 260);
         });
     });
-
-    // Get the container element
-    const container = document.querySelector('body');
-
-    // Elements that need to match the dynamic background color
-    const menuTab = document.querySelector('.menu-container');
-    const footerEl = document.querySelector('footer');
-
-    // Fade-strip references — populated later if on mobile
-    let blurTop = null;
-    let blurBottom = null;
-
-    function updateStripColors(bgColor) {
-        if (blurTop) {
-            // Opaque at top (nav edge) → transparent below
-            blurTop.style.background =
-                `linear-gradient(to bottom, ${bgColor} 0%, transparent 100%)`;
-        }
-        if (blurBottom) {
-            // Opaque at bottom (tucked behind footer) → transparent at top.
-            // Mirrors the top strip exactly: the hard opaque edge is hidden
-            // behind the footer bar; only the dissolving transparent end shows.
-            blurBottom.style.background =
-                `linear-gradient(to top, ${bgColor} 0%, transparent 100%)`;
-        }
-    }
-
-    function applyBgColor(bgColor) {
-        container.style.backgroundColor = bgColor;
-        if (menuTab) menuTab.style.backgroundColor = bgColor;
-        // Sync mobile nav bar colour
-        if (isTouchDevice() || window.innerWidth <= 600) {
-            const navEl = document.querySelector('nav');
-            if (navEl) navEl.style.backgroundColor = bgColor;
-        }
-        if (overlayOpen) overlay.style.backgroundColor = bgColor;
-        if (footerEl && document.body.classList.contains('home-pg')) {
-            footerEl.style.backgroundColor = bgColor;
-        }
-        // Keep fade strips in sync with body colour
-        updateStripColors(bgColor);
-    }
-
-    // Paint mobile nav bar immediately on load
-    if (isTouchDevice() || window.innerWidth <= 600) {
-        const navEl = document.querySelector('nav');
-        if (navEl) navEl.style.backgroundColor = window.getComputedStyle(document.body).backgroundColor;
-    }
 
     // ── DESKTOP SCROLL HIDE/SHOW NAV ─────────────────────────────
     const menu = document.querySelector('.menu-container');
@@ -240,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Mobile: always present on every page (sits below the 66px nav bar)
     // Desktop: only on About page (other pages use the floating pill, no bar)
     if (isMobile || isHomePg) {
-        blurTop = document.createElement('div');
+        const blurTop = document.createElement('div');
         blurTop.className = isMobile ? 'mobile-blur-top' : 'desktop-blur-top';
         document.body.appendChild(blurTop);
     }
@@ -248,17 +193,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // ── BOTTOM FADE STRIP ─────────────────────────────────────────
     // About page only on all devices (fixed footer)
     if (isHomePg) {
-        blurBottom = document.createElement('div');
+        const blurBottom = document.createElement('div');
         blurBottom.className = isMobile ? 'mobile-blur-bottom' : 'desktop-blur-bottom';
-
         document.body.appendChild(blurBottom);
-        // No dynamic positioning needed — CSS anchors the strip to bottom:0
-        // so the opaque gradient end is always tucked behind the footer.
     }
-
-    // Paint strips immediately with the current bg colour
-    const initBg = window.getComputedStyle(document.body).backgroundColor;
-    updateStripColors(initBg);
 
     // ── RESUME DATE ABBREVIATION (all screen sizes) ───────────────
     // Shorten "Mon YYYY" → "Mon 'YY" everywhere so dates stay compact
