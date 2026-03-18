@@ -319,11 +319,14 @@ a:hover {
 @media (max-width: 900px) {
     .left-container {
         position: relative;
+        top: 0;           /* clear the desktop sticky offset — position:relative makes top shift content down */
         width: 100%;
         max-width: 100%;
         height: auto;
         float: none;
         overflow-y: visible;
+        mask-image: none;
+        -webkit-mask-image: none;
     }
 
     .right-container {
@@ -347,7 +350,7 @@ a:hover {
     /* Remove the large top-margin on Experience h2 that was designed for
        the sticky-scroll desktop layout — on mobile it just creates a gap */
     .about .right-container h2 {
-        margin-top: 32px;
+        margin-top: 12px;
     }
 
     /* ── #2: Match About text margins/padding to Experience text ── */
