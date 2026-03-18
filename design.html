@@ -224,10 +224,126 @@
       object-fit: cover;
       display: block;
     }
+
+    /* ── Image Modal ─────────────────────────────────────────── */
+    .img-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(20, 20, 28, 0.88);
+      align-items: center;
+      justify-content: center;
+    }
+    .img-modal-backdrop.open { display: flex; }
+    .img-modal {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .img-modal img {
+      max-width: 98vw;
+      max-height: 98vh;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.5);
+      display: block;
+      transition: opacity 0.18s ease;
+    }
+    .img-modal img.fading { opacity: 0; }
+    .modal-close {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      border: none;
+      background: none;
+      color: #fff;
+      font-size: 30px;
+      line-height: 44px;
+      text-align: center;
+      cursor: pointer;
+      opacity: 0.72;
+      transition: opacity 0.15s;
+      z-index: 1001;
+      padding: 0;
+    }
+    .modal-close:hover { opacity: 1; }
+    .modal-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: none;
+      color: #fff;
+      font-size: 40px;
+      line-height: 1;
+      cursor: pointer;
+      opacity: 0.55;
+      transition: opacity 0.15s;
+      padding: 16px 20px;
+      z-index: 1001;
+      user-select: none;
+    }
+    .modal-nav:hover { opacity: 1; }
+    .modal-nav:disabled { opacity: 0.16; cursor: default; }
+    .modal-nav.prev { left: 12px; }
+    .modal-nav.next { right: 12px; }
+    .img-stage { cursor: zoom-in; }
+
+    /* ── PDF Modal ───────────────────────────────────────────── */
+    #pdf-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(20, 20, 28, 0.92);
+      align-items: center;
+      justify-content: center;
+    }
+    #pdf-modal-backdrop.open { display: flex; }
+    #pdf-modal-canvas-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 92vw;
+      max-height: 92vh;
+    }
+    #pdf-modal-canvas-wrap canvas {
+      max-width: 98vw;
+      max-height: 98vh;
+      border-radius: 4px;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.55);
+      transition: opacity 0.18s ease;
+    }
+    #pdf-modal-canvas-wrap canvas.fading { opacity: 0; }
+    .pdf-stage { cursor: zoom-in; }
   </style>
 </head>
 
 <body class="design-pg">
+
+  <!-- ── PDF Modal ────────────────────────────────────────────── -->
+  <div id="pdf-modal-backdrop" role="dialog" aria-modal="true">
+    <button class="modal-close" id="pdf-modal-close" aria-label="Close">&times;</button>
+    <button class="modal-nav prev" id="pdf-modal-prev" aria-label="Previous page">&#8249;</button>
+    <div id="pdf-modal-canvas-wrap">
+      <canvas id="pdf-modal-canvas"></canvas>
+    </div>
+    <button class="modal-nav next" id="pdf-modal-next" aria-label="Next page">&#8250;</button>
+  </div>
+
+  <!-- ── Shared Image Modal ────────────────────────────────────── -->
+  <div id="img-modal-backdrop" class="img-modal-backdrop" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
+    <button class="modal-nav prev" id="modal-prev" aria-label="Previous">&#8249;</button>
+    <div class="img-modal">
+      <img id="modal-img" src="" alt="">
+    </div>
+    <button class="modal-nav next" id="modal-next" aria-label="Next">&#8250;</button>
+  </div>
   <div class="container">
     <nav>
       <div class="menu-container" style="opacity:1;">
@@ -512,10 +628,15 @@
 
       prevBtn.addEventListener('click', () => { if (pageNum > 1) { pageNum--; renderPage(pageNum); } });
       nextBtn.addEventListener('click', () => { if (pageNum < pdfDoc.numPages) { pageNum++; renderPage(pageNum); } });
-      stage.addEventListener('click', () => window.open(PDF_URL, '_blank'));
+      // Open PDF modal on stage click
+      stage.addEventListener('click', () => openPdfModal(pageNum));
+
       document.addEventListener('keydown', e => {
-        if (e.key === 'ArrowLeft' && pageNum > 1) { pageNum--; renderPage(pageNum); }
-        if (e.key === 'ArrowRight' && pageNum < pdfDoc.numPages) { pageNum++; renderPage(pageNum); }
+        // Only drive the small carousel when the modal is closed
+        if (!document.getElementById('pdf-modal-backdrop').classList.contains('open')) {
+          if (e.key === 'ArrowLeft'  && pageNum > 1)                  { pageNum--; renderPage(pageNum); }
+          if (e.key === 'ArrowRight' && pageNum < pdfDoc.numPages)    { pageNum++; renderPage(pageNum); }
+        }
       });
 
       // Re-render on window resize so the page always fills the stage
@@ -530,6 +651,7 @@
 
       pdfjsLib.getDocument(PDF_URL).promise.then(doc => {
         pdfDoc = doc;
+        window.setPdfDocForModal(doc);
         renderPage(1);
         buildThumbs();
       });
@@ -590,10 +712,140 @@
       prevBtn.addEventListener('click', () => { if (current > 0) { current--; showImage(current); } });
       nextBtn.addEventListener('click', () => { if (current < IMAGES.length - 1) { current++; showImage(current); } });
 
+      // Click on the stage opens modal
+      document.getElementById('img-stage').addEventListener('click', () => {
+        window.openImageModal(IMAGES.map(im => ({ src: im.src, alt: im.label })), current);
+      });
+
       // Show first image immediately
       showImage(0, true);
     })();
   </script>
+
+  <script>
+    /* ── Shared modal logic ───────────────────────────────────── */
+    (() => {
+      const backdrop  = document.getElementById('img-modal-backdrop');
+      const modalImg  = document.getElementById('modal-img');
+      const btnClose  = document.getElementById('modal-close');
+      const btnPrev   = document.getElementById('modal-prev');
+      const btnNext   = document.getElementById('modal-next');
+
+      let currentImages = [];   // array of {src, alt}
+      let currentIndex  = 0;
+
+      function openModal(images, index) {
+        currentImages = images;
+        currentIndex  = index;
+        setModalImage(index, true);
+        backdrop.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        backdrop.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      function setModalImage(idx, instant) {
+        if (!instant) modalImg.classList.add('fading');
+        setTimeout(() => {
+          modalImg.src = currentImages[idx].src;
+          modalImg.alt = currentImages[idx].alt || '';
+          modalImg.classList.remove('fading');
+          btnPrev.disabled = idx === 0;
+          btnNext.disabled = idx === currentImages.length - 1;
+          currentIndex = idx;
+        }, instant ? 0 : 160);
+      }
+
+      btnClose.addEventListener('click', closeModal);
+      backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+      btnPrev.addEventListener('click', () => { if (currentIndex > 0) setModalImage(currentIndex - 1); });
+      btnNext.addEventListener('click', () => { if (currentIndex < currentImages.length - 1) setModalImage(currentIndex + 1); });
+
+      document.addEventListener('keydown', e => {
+        if (!backdrop.classList.contains('open')) return;
+        if (e.key === 'Escape')     closeModal();
+        if (e.key === 'ArrowLeft')  { if (currentIndex > 0) setModalImage(currentIndex - 1); }
+        if (e.key === 'ArrowRight') { if (currentIndex < currentImages.length - 1) setModalImage(currentIndex + 1); }
+      });
+
+      /* Public API for carousels to call */
+      window.openImageModal = openModal;
+    })();
+  </script>
+  <script>
+    /* ── PDF Modal logic ──────────────────────────────────────── */
+    (() => {
+      const backdrop   = document.getElementById('pdf-modal-backdrop');
+      const canvas     = document.getElementById('pdf-modal-canvas');
+      const ctx        = canvas.getContext('2d');
+      const btnClose   = document.getElementById('pdf-modal-close');
+      const btnPrev    = document.getElementById('pdf-modal-prev');
+      const btnNext    = document.getElementById('pdf-modal-next');
+
+      let modalPdfDoc  = null;   // set by the PDF carousel script via window.setPdfDocForModal
+      let modalPageNum = 1;
+      let modalRendering = false;
+
+      async function renderModalPage(num, instant) {
+        if (!modalPdfDoc || modalRendering) return;
+        modalRendering = true;
+
+        if (!instant) canvas.classList.add('fading');
+        await new Promise(r => setTimeout(r, instant ? 0 : 160));
+
+        const page = await modalPdfDoc.getPage(num);
+        const PADDING = 1;
+        const maxW = window.innerWidth  * 0.98 - PADDING * 2;
+        const maxH = window.innerHeight * 0.98 - PADDING * 2;
+        const vp1  = page.getViewport({ scale: 1 });
+        const scale = Math.min(maxW / vp1.width, maxH / vp1.height);
+        const vp   = page.getViewport({ scale });
+
+        canvas.width  = Math.round(vp.width);
+        canvas.height = Math.round(vp.height);
+        await page.render({ canvasContext: ctx, viewport: vp }).promise;
+
+        canvas.classList.remove('fading');
+        btnPrev.disabled = num === 1;
+        btnNext.disabled = num === modalPdfDoc.numPages;
+        modalPageNum = num;
+        modalRendering = false;
+      }
+
+      function openPdfModal(startPage) {
+        backdrop.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        renderModalPage(startPage, true);
+      }
+
+      function closePdfModal() {
+        backdrop.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      btnClose.addEventListener('click', closePdfModal);
+      backdrop.addEventListener('click', e => { if (e.target === backdrop) closePdfModal(); });
+      btnPrev.addEventListener('click', () => { if (modalPageNum > 1) renderModalPage(modalPageNum - 1); });
+      btnNext.addEventListener('click', () => {
+        if (modalPdfDoc && modalPageNum < modalPdfDoc.numPages) renderModalPage(modalPageNum + 1);
+      });
+
+      document.addEventListener('keydown', e => {
+        if (!backdrop.classList.contains('open')) return;
+        if (e.key === 'Escape')     closePdfModal();
+        if (e.key === 'ArrowLeft'  && modalPageNum > 1)                            renderModalPage(modalPageNum - 1);
+        if (e.key === 'ArrowRight' && modalPdfDoc && modalPageNum < modalPdfDoc.numPages) renderModalPage(modalPageNum + 1);
+      });
+
+      // Exposed so the PDF carousel script can hand off the loaded doc and open the modal
+      window.openPdfModal = openPdfModal;
+      window.setPdfDocForModal = doc => { modalPdfDoc = doc; };
+    })();
+  </script>
+
 </body>
 
 </html>
@@ -650,6 +902,11 @@
 
       prevBtn.addEventListener('click', () => { if (current > 0)                   { current--; showImage(current); } });
       nextBtn.addEventListener('click', () => { if (current < GRAPHICS.length - 1) { current++; showImage(current); } });
+
+      // Click on the stage image opens modal
+      document.getElementById('gfx-stage').addEventListener('click', () => {
+        window.openImageModal(GRAPHICS.map(g => ({ src: g.src, alt: g.label })), current);
+      });
 
       showImage(0, true);
     })();
