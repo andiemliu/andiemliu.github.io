@@ -18,9 +18,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 14px;
-      /* fill the viewport: subtract nav (~60px), heading (~100px), controls+thumbs (~120px) */
-      height: calc(100vh - 280px);
+      gap: 0;
+      height: calc(100vh - 200px);
       min-height: 400px;
     }
 
@@ -29,12 +28,8 @@
       position: relative;
       width: 100%;
       flex: 1;
-      /* take all remaining vertical space */
       min-height: 0;
-      /* allow flex shrink below content size */
-      /* background: #f0ece6; */
       border-radius: 6px;
-      /* box-shadow: 0 4px 24px rgba(0,0,0,0.13); */
       overflow: hidden;
       display: flex;
       align-items: center;
@@ -62,12 +57,60 @@
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
     }
 
-    /* Arrow nav buttons */
-    .pdf-controls {
+    /* ── Carousel overlay nav buttons ───────────────────────── */
+    /* Sit inside the stage, vertically centred, semi-transparent
+       until hovered — same treatment as the modal-nav buttons.   */
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1.5px solid #6e7ba1c5;
+      background: #eff2ee;
+      color: #222;
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 16px;
+      justify-content: center;
+      opacity: 0.45;
+      transition: border-color 0.2s, background-color 0.2s, opacity 0.2s,
+                  transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
       user-select: none;
+      flex-shrink: 0;
+    }
+
+    .carousel-btn:hover {
+      border-color: #6e7ba1;
+      background: #e4e8e3;
+      opacity: 1;
+    }
+
+    .carousel-btn.prev {
+      left: 10px;
+    }
+
+    .carousel-btn.prev:hover {
+      transform: translateY(-50%) translateX(-3px);
+    }
+
+    .carousel-btn.next {
+      right: 10px;
+    }
+
+    .carousel-btn.next:hover {
+      transform: translateY(-50%) translateX(3px);
+    }
+
+    .carousel-btn:disabled {
+      opacity: 0.15;
+      cursor: default;
+      transform: translateY(-50%);
+    }
+    .pdf-controls {
+      display: none;
     }
 
     .round-btn {
@@ -80,21 +123,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: border-color 0.2s, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: border-color 0.2s, background-color 0.2s, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
       flex-shrink: 0;
     }
 
     .round-btn:hover {
       border-color: #6e7ba1;
-    }
-
-    /* Directional nudge: prev slides left, next slides right */
-    #prev-page:hover, #img-prev:hover, #gfx-prev:hover {
-      transform: translateX(-3px);
-    }
-
-    #next-page:hover, #img-next:hover, #gfx-next:hover {
-      transform: translateX(3px);
+      background: #e4e8e3;
     }
 
     .round-btn:active {
@@ -107,57 +142,13 @@
       transform: none;
     }
 
-    #page-info {
-      font-size: 0.92rem;
-      letter-spacing: 0.03em;
-      min-width: 80px;
-      text-align: center;
-      color: #555;
-    }
-
-    /* Thumbnail strip */
-    .pdf-thumbs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      max-width: 900px;
-    }
-
-    .pdf-thumb {
-      width: 52px;
-      height: 72px;
-      border-radius: 3px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      overflow: hidden;
-      background: #e8e2da;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-      transition: border-color 0.15s, transform 0.12s;
-      flex-shrink: 0;
-    }
-
-    .pdf-thumb:hover {
-      transform: scale(1.08);
-    }
-
-    .pdf-thumb.active {
-      border-color: #888;
-    }
-
-    .pdf-thumb canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
     /* ── Image Carousel ─────────────────────────────────────── */
     .img-carousel {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 14px;
-      height: calc(100vh - 280px);
+      gap: 0;
+      height: calc(100vh - 200px);
       min-height: 400px;
       margin-top: 10px;
     }
@@ -172,6 +163,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: zoom-in;
     }
 
     .img-stage-inner {
@@ -188,48 +180,11 @@
     }
 
     .img-stage img {
-      max-width: calc(100% - 48px);
+      max-width: calc(100% - 96px);
       max-height: calc(100% - 48px);
       object-fit: contain;
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
       border-radius: 3px;
-    }
-
-    /* Thumbnail strip for carousel */
-    .img-thumbs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      max-width: 900px;
-    }
-
-    .img-thumb {
-      width: 64px;
-      height: 52px;
-      border-radius: 3px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      overflow: hidden;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-      transition: border-color 0.15s, transform 0.12s;
-      flex-shrink: 0;
-      background: #e8e2da;
-    }
-
-    .img-thumb:hover {
-      transform: scale(1.08);
-    }
-
-    .img-thumb.active {
-      border-color: #888;
-    }
-
-    .img-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
     }
 
     /* ── Image Modal ─────────────────────────────────────────── */
@@ -346,8 +301,8 @@
     }
 
     #pdf-modal-canvas-wrap canvas {
-      max-width: 98vw;
-      max-height: 98vh;
+      max-width: 85vw;
+      max-height: 85vh;
       border-radius: 4px;
       box-shadow: 0 8px 48px rgba(0, 0, 0, 0.55);
       transition: opacity 0.18s ease;
@@ -439,33 +394,21 @@
           via <em>bildung</em>, and alienation in a modern world.</p>
 
         <div class="pdf-viewer">
-          <!-- Fixed-size stage -->
           <div class="pdf-stage" id="pdf-stage" title="Click to open PDF">
+            <button id="prev-page" class="carousel-btn prev" aria-label="Previous page" disabled>
+              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              </svg>
+            </button>
             <div class="pdf-stage-inner" id="pdf-stage-inner">
               <!-- canvases injected by JS -->
             </div>
-          </div>
-
-          <!-- Prev / page-info / Next -->
-          <div class="pdf-controls">
-            <button id="prev-page" class="round-btn" aria-label="Previous page" disabled>
+            <button id="next-page" class="carousel-btn next" aria-label="Next page">
               <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
-                  stroke-linejoin="round" fill="none" />
-              </svg>
-            </button>
-            <span id="page-info">1 / ?</span>
-            <button id="next-page" class="round-btn" aria-label="Next page">
-              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
-                  stroke-linejoin="round" fill="none" />
+                <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
               </svg>
             </button>
           </div>
-
-          <!-- Thumbnail strip -->
-          <div class="pdf-thumbs" id="pdf-thumbs"></div>
-
         </div><!-- /.pdf-viewer -->
       </section>
 
@@ -501,31 +444,21 @@
           These designs reflect my approach to combining visual elements with written content to create engaging
           narratives.</p>
         <div class="img-carousel">
-
           <div class="img-stage" id="img-stage">
+            <button id="img-prev" class="carousel-btn prev" aria-label="Previous image" disabled>
+              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              </svg>
+            </button>
             <div class="img-stage-inner" id="img-stage-inner">
               <img id="carousel-img" src="" alt="">
             </div>
-          </div>
-
-          <div class="pdf-controls">
-            <button id="img-prev" class="round-btn" aria-label="Previous image" disabled>
+            <button id="img-next" class="carousel-btn next" aria-label="Next image">
               <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
-                  stroke-linejoin="round" fill="none" />
-              </svg>
-            </button>
-            <span id="img-info"
-              style="font-size:0.92rem;letter-spacing:0.03em;min-width:80px;text-align:center;color:#555;">1 / 6</span>
-            <button id="img-next" class="round-btn" aria-label="Next image">
-              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
-                  stroke-linejoin="round" fill="none" />
+                <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
               </svg>
             </button>
           </div>
-
-          <div class="img-thumbs" id="img-thumbs"></div>
         </div><!-- /.img-carousel -->
       </section>
 
@@ -559,32 +492,21 @@
         <p>Event flyers, social media graphics, and promotional materials created for various organizations and
           occasions.</p>
         <div class="img-carousel">
-
           <div class="img-stage" id="gfx-stage">
+            <button id="gfx-prev" class="carousel-btn prev" aria-label="Previous graphic" disabled>
+              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              </svg>
+            </button>
             <div class="img-stage-inner" id="gfx-stage-inner">
               <img id="gfx-img" src="" alt="">
             </div>
-          </div>
-
-          <div class="pdf-controls">
-            <button id="gfx-prev" class="round-btn" aria-label="Previous graphic" disabled>
+            <button id="gfx-next" class="carousel-btn next" aria-label="Next graphic">
               <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
-                  stroke-linejoin="round" fill="none" />
-              </svg>
-            </button>
-            <span id="gfx-info"
-              style="font-size:0.92rem;letter-spacing:0.03em;min-width:80px;text-align:center;color:#555;">1 / 7</span>
-            <button id="gfx-next" class="round-btn" aria-label="Next graphic">
-              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
-                <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
-                  stroke-linejoin="round" fill="none" />
+                <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
               </svg>
             </button>
           </div>
-
-          <div class="img-thumbs" id="gfx-thumbs"></div>
-          <div style="height: 80px;"></div>
         </div><!-- /.img-carousel -->
       </section>
 
@@ -604,14 +526,11 @@
       const inner = document.getElementById('pdf-stage-inner');
       const prevBtn = document.getElementById('prev-page');
       const nextBtn = document.getElementById('next-page');
-      const pageInfo = document.getElementById('page-info');
-      const thumbsEl = document.getElementById('pdf-thumbs');
 
       async function renderPage(num) {
         if (rendering) return;
         rendering = true;
 
-        // Measure the stage's actual rendered size each time
         const stageW = stage.clientWidth;
         const stageH = stage.clientHeight;
 
@@ -623,7 +542,6 @@
         );
         const vp = page.getViewport({ scale });
 
-        // Fade out
         inner.classList.add('fading');
         await new Promise(r => setTimeout(r, 220));
 
@@ -636,44 +554,15 @@
 
         inner.classList.remove('fading');
 
-        pageInfo.textContent = `${num} / ${pdfDoc.numPages}`;
         prevBtn.disabled = num === 1;
         nextBtn.disabled = num === pdfDoc.numPages;
-
-        document.querySelectorAll('.pdf-thumb').forEach((t, i) =>
-          t.classList.toggle('active', i === num - 1));
 
         rendering = false;
       }
 
-      async function buildThumbs() {
-        // Render thumbnails one at a time during idle periods so the main
-        // thread isn't saturated — critical on low-end mobile CPUs.
-        const idle = window.requestIdleCallback || (cb => setTimeout(cb, 16));
-        for (let i = 1; i <= pdfDoc.numPages; i++) {
-          const wrapper = document.createElement('div');
-          wrapper.className = 'pdf-thumb' + (i === 1 ? ' active' : '');
-          wrapper.title = `Page ${i}`;
-          wrapper.addEventListener('click', () => { pageNum = i; renderPage(i); });
-
-          const cvs = document.createElement('canvas');
-          wrapper.appendChild(cvs);
-          thumbsEl.appendChild(wrapper);
-
-          // Yield to the browser between each thumb render
-          await new Promise(resolve => idle(resolve));
-
-          const pg = await pdfDoc.getPage(i);
-          const vp = pg.getViewport({ scale: 0.12 });
-          cvs.width = Math.round(vp.width);
-          cvs.height = Math.round(vp.height);
-          await pg.render({ canvasContext: cvs.getContext('2d'), viewport: vp }).promise;
-        }
-      }
-
-      prevBtn.addEventListener('click', () => { if (pageNum > 1) { pageNum--; renderPage(pageNum); } });
-      nextBtn.addEventListener('click', () => { if (pageNum < pdfDoc.numPages) { pageNum++; renderPage(pageNum); } });
-      // Open PDF modal on stage click
+      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); if (pageNum > 1) { pageNum--; renderPage(pageNum); } });
+      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); if (pageNum < pdfDoc.numPages) { pageNum++; renderPage(pageNum); } });
+      // Open PDF modal on stage click (but not when buttons are clicked)
       stage.addEventListener('click', () => openPdfModal(pageNum));
 
       document.addEventListener('keydown', e => {
@@ -702,7 +591,6 @@
           pdfDoc = doc;
           window.setPdfDocForModal(doc);
           renderPage(1);
-          buildThumbs();
         });
       }
 
@@ -734,8 +622,6 @@
       const img = document.getElementById('carousel-img');
       const prevBtn = document.getElementById('img-prev');
       const nextBtn = document.getElementById('img-next');
-      const info = document.getElementById('img-info');
-      const thumbs = document.getElementById('img-thumbs');
 
       function showImage(idx, instant) {
         if (fading) return;
@@ -745,31 +631,14 @@
           img.src = IMAGES[idx].src;
           img.alt = IMAGES[idx].label;
           inner.classList.remove('fading');
-          info.textContent = `${idx + 1} / ${IMAGES.length}`;
           prevBtn.disabled = idx === 0;
           nextBtn.disabled = idx === IMAGES.length - 1;
-          document.querySelectorAll('.img-thumb').forEach((t, i) =>
-            t.classList.toggle('active', i === idx));
           fading = false;
         }, instant ? 0 : 220);
       }
 
-      // Build thumbnails
-      IMAGES.forEach((im, i) => {
-        const wrap = document.createElement('div');
-        wrap.className = 'img-thumb' + (i === 0 ? ' active' : '');
-        wrap.title = im.label;
-        wrap.addEventListener('click', () => { current = i; showImage(i); });
-        const t = document.createElement('img');
-        t.src = im.src;
-        t.alt = im.label;
-        t.loading = 'lazy';
-        wrap.appendChild(t);
-        thumbs.appendChild(wrap);
-      });
-
-      prevBtn.addEventListener('click', () => { if (current > 0) { current--; showImage(current); } });
-      nextBtn.addEventListener('click', () => { if (current < IMAGES.length - 1) { current++; showImage(current); } });
+      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); if (current > 0) { current--; showImage(current); } });
+      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); if (current < IMAGES.length - 1) { current++; showImage(current); } });
 
       // Click on the stage opens modal
       document.getElementById('img-stage').addEventListener('click', () => {
@@ -927,8 +796,6 @@
     const img = document.getElementById('gfx-img');
     const prevBtn = document.getElementById('gfx-prev');
     const nextBtn = document.getElementById('gfx-next');
-    const info = document.getElementById('gfx-info');
-    const thumbs = document.getElementById('gfx-thumbs');
 
     function showImage(idx, instant) {
       if (fading) return;
@@ -938,30 +805,14 @@
         img.src = GRAPHICS[idx].src;
         img.alt = GRAPHICS[idx].label;
         inner.classList.remove('fading');
-        info.textContent = `${idx + 1} / ${GRAPHICS.length}`;
         prevBtn.disabled = idx === 0;
         nextBtn.disabled = idx === GRAPHICS.length - 1;
-        document.querySelectorAll('#gfx-thumbs .img-thumb').forEach((t, i) =>
-          t.classList.toggle('active', i === idx));
         fading = false;
       }, instant ? 0 : 220);
     }
 
-    GRAPHICS.forEach((gfx, i) => {
-      const wrap = document.createElement('div');
-      wrap.className = 'img-thumb' + (i === 0 ? ' active' : '');
-      wrap.title = gfx.label;
-      wrap.addEventListener('click', () => { current = i; showImage(i); });
-      const t = document.createElement('img');
-      t.src = gfx.src;
-      t.alt = gfx.label;
-      t.loading = 'lazy';
-      wrap.appendChild(t);
-      thumbs.appendChild(wrap);
-    });
-
-    prevBtn.addEventListener('click', () => { if (current > 0) { current--; showImage(current); } });
-    nextBtn.addEventListener('click', () => { if (current < GRAPHICS.length - 1) { current++; showImage(current); } });
+    prevBtn.addEventListener('click', (e) => { e.stopPropagation(); if (current > 0) { current--; showImage(current); } });
+    nextBtn.addEventListener('click', (e) => { e.stopPropagation(); if (current < GRAPHICS.length - 1) { current++; showImage(current); } });
 
     // Click on the stage image opens modal
     document.getElementById('gfx-stage').addEventListener('click', () => {
