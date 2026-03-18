@@ -235,23 +235,32 @@
       align-items: center;
       justify-content: center;
     }
-    .img-modal-backdrop.open { display: flex; }
+
+    .img-modal-backdrop.open {
+      display: flex;
+    }
+
     .img-modal {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
     }
+
     .img-modal img {
       max-width: 98vw;
       max-height: 98vh;
       object-fit: contain;
       border-radius: 4px;
-      box-shadow: 0 8px 48px rgba(0,0,0,0.5);
+      box-shadow: 0 8px 48px rgba(0, 0, 0, 0.5);
       display: block;
       transition: opacity 0.18s ease;
     }
-    .img-modal img.fading { opacity: 0; }
+
+    .img-modal img.fading {
+      opacity: 0;
+    }
+
     .modal-close {
       position: fixed;
       top: 20px;
@@ -270,7 +279,11 @@
       z-index: 1001;
       padding: 0;
     }
-    .modal-close:hover { opacity: 1; }
+
+    .modal-close:hover {
+      opacity: 1;
+    }
+
     .modal-nav {
       position: fixed;
       top: 50%;
@@ -287,11 +300,27 @@
       z-index: 1001;
       user-select: none;
     }
-    .modal-nav:hover { opacity: 1; }
-    .modal-nav:disabled { opacity: 0.16; cursor: default; }
-    .modal-nav.prev { left: 12px; }
-    .modal-nav.next { right: 12px; }
-    .img-stage { cursor: zoom-in; }
+
+    .modal-nav:hover {
+      opacity: 1;
+    }
+
+    .modal-nav:disabled {
+      opacity: 0.16;
+      cursor: default;
+    }
+
+    .modal-nav.prev {
+      left: 12px;
+    }
+
+    .modal-nav.next {
+      right: 12px;
+    }
+
+    .img-stage {
+      cursor: zoom-in;
+    }
 
     /* ── PDF Modal ───────────────────────────────────────────── */
     #pdf-modal-backdrop {
@@ -303,7 +332,11 @@
       align-items: center;
       justify-content: center;
     }
-    #pdf-modal-backdrop.open { display: flex; }
+
+    #pdf-modal-backdrop.open {
+      display: flex;
+    }
+
     #pdf-modal-canvas-wrap {
       display: flex;
       align-items: center;
@@ -311,15 +344,22 @@
       max-width: 92vw;
       max-height: 92vh;
     }
+
     #pdf-modal-canvas-wrap canvas {
       max-width: 98vw;
       max-height: 98vh;
       border-radius: 4px;
-      box-shadow: 0 8px 48px rgba(0,0,0,0.55);
+      box-shadow: 0 8px 48px rgba(0, 0, 0, 0.55);
       transition: opacity 0.18s ease;
     }
-    #pdf-modal-canvas-wrap canvas.fading { opacity: 0; }
-    .pdf-stage { cursor: zoom-in; }
+
+    #pdf-modal-canvas-wrap canvas.fading {
+      opacity: 0;
+    }
+
+    .pdf-stage {
+      cursor: zoom-in;
+    }
   </style>
 </head>
 
@@ -518,7 +558,8 @@
 
       <section>
         <h2 style="justify-self: center;">Graphics</h2>
-        <p>Event flyers, social media graphics, and promotional materials created for various organizations and occasions.</p>
+        <p>Event flyers, social media graphics, and promotional materials created for various organizations and
+          occasions.</p>
         <div class="img-carousel">
 
           <div class="img-stage" id="gfx-stage">
@@ -634,8 +675,8 @@
       document.addEventListener('keydown', e => {
         // Only drive the small carousel when the modal is closed
         if (!document.getElementById('pdf-modal-backdrop').classList.contains('open')) {
-          if (e.key === 'ArrowLeft'  && pageNum > 1)                  { pageNum--; renderPage(pageNum); }
-          if (e.key === 'ArrowRight' && pageNum < pdfDoc.numPages)    { pageNum++; renderPage(pageNum); }
+          if (e.key === 'ArrowLeft' && pageNum > 1) { pageNum--; renderPage(pageNum); }
+          if (e.key === 'ArrowRight' && pageNum < pdfDoc.numPages) { pageNum++; renderPage(pageNum); }
         }
       });
 
@@ -725,18 +766,18 @@
   <script>
     /* ── Shared modal logic ───────────────────────────────────── */
     (() => {
-      const backdrop  = document.getElementById('img-modal-backdrop');
-      const modalImg  = document.getElementById('modal-img');
-      const btnClose  = document.getElementById('modal-close');
-      const btnPrev   = document.getElementById('modal-prev');
-      const btnNext   = document.getElementById('modal-next');
+      const backdrop = document.getElementById('img-modal-backdrop');
+      const modalImg = document.getElementById('modal-img');
+      const btnClose = document.getElementById('modal-close');
+      const btnPrev = document.getElementById('modal-prev');
+      const btnNext = document.getElementById('modal-next');
 
       let currentImages = [];   // array of {src, alt}
-      let currentIndex  = 0;
+      let currentIndex = 0;
 
       function openModal(images, index) {
         currentImages = images;
-        currentIndex  = index;
+        currentIndex = index;
         setModalImage(index, true);
         backdrop.classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -766,8 +807,8 @@
 
       document.addEventListener('keydown', e => {
         if (!backdrop.classList.contains('open')) return;
-        if (e.key === 'Escape')     closeModal();
-        if (e.key === 'ArrowLeft')  { if (currentIndex > 0) setModalImage(currentIndex - 1); }
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowLeft') { if (currentIndex > 0) setModalImage(currentIndex - 1); }
         if (e.key === 'ArrowRight') { if (currentIndex < currentImages.length - 1) setModalImage(currentIndex + 1); }
       });
 
@@ -778,14 +819,14 @@
   <script>
     /* ── PDF Modal logic ──────────────────────────────────────── */
     (() => {
-      const backdrop   = document.getElementById('pdf-modal-backdrop');
-      const canvas     = document.getElementById('pdf-modal-canvas');
-      const ctx        = canvas.getContext('2d');
-      const btnClose   = document.getElementById('pdf-modal-close');
-      const btnPrev    = document.getElementById('pdf-modal-prev');
-      const btnNext    = document.getElementById('pdf-modal-next');
+      const backdrop = document.getElementById('pdf-modal-backdrop');
+      const canvas = document.getElementById('pdf-modal-canvas');
+      const ctx = canvas.getContext('2d');
+      const btnClose = document.getElementById('pdf-modal-close');
+      const btnPrev = document.getElementById('pdf-modal-prev');
+      const btnNext = document.getElementById('pdf-modal-next');
 
-      let modalPdfDoc  = null;   // set by the PDF carousel script via window.setPdfDocForModal
+      let modalPdfDoc = null;   // set by the PDF carousel script via window.setPdfDocForModal
       let modalPageNum = 1;
       let modalRendering = false;
 
@@ -798,13 +839,13 @@
 
         const page = await modalPdfDoc.getPage(num);
         const PADDING = 1;
-        const maxW = window.innerWidth  * 0.98 - PADDING * 2;
+        const maxW = window.innerWidth * 0.98 - PADDING * 2;
         const maxH = window.innerHeight * 0.98 - PADDING * 2;
-        const vp1  = page.getViewport({ scale: 1 });
+        const vp1 = page.getViewport({ scale: 1 });
         const scale = Math.min(maxW / vp1.width, maxH / vp1.height);
-        const vp   = page.getViewport({ scale });
+        const vp = page.getViewport({ scale });
 
-        canvas.width  = Math.round(vp.width);
+        canvas.width = Math.round(vp.width);
         canvas.height = Math.round(vp.height);
         await page.render({ canvasContext: ctx, viewport: vp }).promise;
 
@@ -835,8 +876,8 @@
 
       document.addEventListener('keydown', e => {
         if (!backdrop.classList.contains('open')) return;
-        if (e.key === 'Escape')     closePdfModal();
-        if (e.key === 'ArrowLeft'  && modalPageNum > 1)                            renderModalPage(modalPageNum - 1);
+        if (e.key === 'Escape') closePdfModal();
+        if (e.key === 'ArrowLeft' && modalPageNum > 1) renderModalPage(modalPageNum - 1);
         if (e.key === 'ArrowRight' && modalPdfDoc && modalPageNum < modalPdfDoc.numPages) renderModalPage(modalPageNum + 1);
       });
 
@@ -849,65 +890,65 @@
 </body>
 
 </html>
-  <script>
-    (() => {
-      const GRAPHICS = [
-        { src: './design/graphics/city-planning.png', label: 'City Planning' },
-        { src: './design/graphics/tedx-2.png',        label: 'TEDx 2' },
-        { src: './design/graphics/teen-trivia.jpg',   label: 'Teen Trivia' },
-        { src: './design/graphics/egg-drop.jpg',      label: 'Egg Drop' },
-        { src: './design/graphics/match-book.jpg',    label: 'Match Book' },
-        { src: './design/graphics/roundup.png',       label: 'Roundup' },
-        { src: './design/graphics/tedx.png',          label: 'TEDx' },
-      ];
+<script>
+  (() => {
+    const GRAPHICS = [
+      { src: './design/graphics/city-planning.png', label: 'City Planning' },
+      { src: './design/graphics/tedx-2.png', label: 'TEDx 2' },
+      { src: './design/graphics/teen-trivia.jpg', label: 'Teen Trivia' },
+      { src: './design/graphics/egg-drop.jpg', label: 'Egg Drop' },
+      { src: './design/graphics/match-book.jpg', label: 'Match Book' },
+      { src: './design/graphics/roundup.png', label: 'Roundup' },
+      { src: './design/graphics/tedx.png', label: 'TEDx' },
+    ];
 
-      let current = 0;
-      let fading  = false;
+    let current = 0;
+    let fading = false;
 
-      const inner   = document.getElementById('gfx-stage-inner');
-      const img     = document.getElementById('gfx-img');
-      const prevBtn = document.getElementById('gfx-prev');
-      const nextBtn = document.getElementById('gfx-next');
-      const info    = document.getElementById('gfx-info');
-      const thumbs  = document.getElementById('gfx-thumbs');
+    const inner = document.getElementById('gfx-stage-inner');
+    const img = document.getElementById('gfx-img');
+    const prevBtn = document.getElementById('gfx-prev');
+    const nextBtn = document.getElementById('gfx-next');
+    const info = document.getElementById('gfx-info');
+    const thumbs = document.getElementById('gfx-thumbs');
 
-      function showImage(idx, instant) {
-        if (fading) return;
-        fading = true;
-        inner.classList.add('fading');
-        setTimeout(() => {
-          img.src = GRAPHICS[idx].src;
-          img.alt = GRAPHICS[idx].label;
-          inner.classList.remove('fading');
-          info.textContent = `${idx + 1} / ${GRAPHICS.length}`;
-          prevBtn.disabled = idx === 0;
-          nextBtn.disabled = idx === GRAPHICS.length - 1;
-          document.querySelectorAll('#gfx-thumbs .img-thumb').forEach((t, i) =>
-            t.classList.toggle('active', i === idx));
-          fading = false;
-        }, instant ? 0 : 220);
-      }
+    function showImage(idx, instant) {
+      if (fading) return;
+      fading = true;
+      inner.classList.add('fading');
+      setTimeout(() => {
+        img.src = GRAPHICS[idx].src;
+        img.alt = GRAPHICS[idx].label;
+        inner.classList.remove('fading');
+        info.textContent = `${idx + 1} / ${GRAPHICS.length}`;
+        prevBtn.disabled = idx === 0;
+        nextBtn.disabled = idx === GRAPHICS.length - 1;
+        document.querySelectorAll('#gfx-thumbs .img-thumb').forEach((t, i) =>
+          t.classList.toggle('active', i === idx));
+        fading = false;
+      }, instant ? 0 : 220);
+    }
 
-      GRAPHICS.forEach((gfx, i) => {
-        const wrap = document.createElement('div');
-        wrap.className = 'img-thumb' + (i === 0 ? ' active' : '');
-        wrap.title = gfx.label;
-        wrap.addEventListener('click', () => { current = i; showImage(i); });
-        const t = document.createElement('img');
-        t.src = gfx.src;
-        t.alt = gfx.label;
-        wrap.appendChild(t);
-        thumbs.appendChild(wrap);
-      });
+    GRAPHICS.forEach((gfx, i) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'img-thumb' + (i === 0 ? ' active' : '');
+      wrap.title = gfx.label;
+      wrap.addEventListener('click', () => { current = i; showImage(i); });
+      const t = document.createElement('img');
+      t.src = gfx.src;
+      t.alt = gfx.label;
+      wrap.appendChild(t);
+      thumbs.appendChild(wrap);
+    });
 
-      prevBtn.addEventListener('click', () => { if (current > 0)                   { current--; showImage(current); } });
-      nextBtn.addEventListener('click', () => { if (current < GRAPHICS.length - 1) { current++; showImage(current); } });
+    prevBtn.addEventListener('click', () => { if (current > 0) { current--; showImage(current); } });
+    nextBtn.addEventListener('click', () => { if (current < GRAPHICS.length - 1) { current++; showImage(current); } });
 
-      // Click on the stage image opens modal
-      document.getElementById('gfx-stage').addEventListener('click', () => {
-        window.openImageModal(GRAPHICS.map(g => ({ src: g.src, alt: g.label })), current);
-      });
+    // Click on the stage image opens modal
+    document.getElementById('gfx-stage').addEventListener('click', () => {
+      window.openImageModal(GRAPHICS.map(g => ({ src: g.src, alt: g.label })), current);
+    });
 
-      showImage(0, true);
-    })();
-  </script>
+    showImage(0, true);
+  })();
+</script>
