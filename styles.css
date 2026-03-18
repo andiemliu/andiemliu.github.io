@@ -457,6 +457,7 @@ input, textarea {
     padding:10px;
     border-radius: 5px;
     border: 1px solid #ccc;
+    font-family: inherit;
 }
 input[type=submit]:hover {
     background-color:rgba(246, 253, 238, 0.962);
