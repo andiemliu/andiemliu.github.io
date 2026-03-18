@@ -48,7 +48,40 @@ document.addEventListener('DOMContentLoaded', function () {
     // Close overlay when a nav link is tapped
     overlay.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => closeOverlay());
+        // On touch: retreat the current active/tapped underline, grow the new one
+        link.addEventListener('touchstart', () => {
+            overlay.querySelectorAll('a').forEach(l => {
+                if (l !== link && (l.classList.contains('active') || l.classList.contains('tapped'))) {
+                    l.classList.remove('tapped');
+                    l.classList.add('retreating');
+                }
+            });
+            link.classList.remove('retreating');
+            link.classList.add('tapped');
+        }, { passive: true });
     });
+
+    // ── DESKTOP NAV DIRECTIONAL RETREAT ──────────────────────────
+    // On click of a desktop nav link, animate the active underline
+    // retreating in the direction of the clicked link before navigating.
+    const desktopMenuLinks = Array.from(document.querySelectorAll('.menu a'));
+    const activeLink = desktopMenuLinks.find(l => l.classList.contains('active'));
+
+    if (activeLink) {
+        const activeIndex = desktopMenuLinks.indexOf(activeLink);
+
+        desktopMenuLinks.forEach((link, idx) => {
+            if (link === activeLink) return;
+            link.addEventListener('click', function (e) {
+                // clicking to the right → underline retreats rightward (shrinks from left)
+                // clicking to the left  → underline retreats leftward  (shrinks from right)
+                const retreatClass = idx > activeIndex ? 'retreating-right' : 'retreating-left';
+                activeLink.classList.add(retreatClass);
+                // Navigation is handled by the existing page-transition listener below;
+                // the retreat animation plays during its 260ms delay.
+            });
+        });
+    }
 
     // ── PAGE TRANSITION LINKS ─────────────────────────────────────
     document.querySelectorAll('a[href]').forEach(link => {
@@ -81,21 +114,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateStripColors(bgColor) {
         if (blurTop) {
+            // Opaque at top (nav edge) → transparent below
             blurTop.style.background =
                 `linear-gradient(to bottom, ${bgColor} 0%, transparent 100%)`;
         }
         if (blurBottom) {
+            // Opaque at bottom (tucked behind footer) → transparent at top.
+            // Mirrors the top strip exactly: the hard opaque edge is hidden
+            // behind the footer bar; only the dissolving transparent end shows.
             blurBottom.style.background =
-                `linear-gradient(to bottom, transparent 0%, ${bgColor} 100%)`;
+                `linear-gradient(to top, ${bgColor} 0%, transparent 100%)`;
         }
     }
 
     function applyBgColor(bgColor) {
         container.style.backgroundColor = bgColor;
         if (menuTab) menuTab.style.backgroundColor = bgColor;
-        // Keep the mobile nav bar (the <nav> element) in sync too
-        const navEl = document.querySelector('nav');
-        if (navEl) navEl.style.backgroundColor = bgColor;
+        // Sync mobile nav bar colour
+        if (isTouchDevice() || window.innerWidth <= 600) {
+            const navEl = document.querySelector('nav');
+            if (navEl) navEl.style.backgroundColor = bgColor;
+        }
         if (overlayOpen) overlay.style.backgroundColor = bgColor;
         if (footerEl && document.body.classList.contains('home-pg')) {
             footerEl.style.backgroundColor = bgColor;
@@ -104,31 +143,11 @@ document.addEventListener('DOMContentLoaded', function () {
         updateStripColors(bgColor);
     }
 
-    // Paint nav bar immediately on load so it's never transparent
-    // regardless of how fast the user starts scrolling
-    const navEl = document.querySelector('nav');
-    if (navEl) navEl.style.backgroundColor = window.getComputedStyle(document.body).backgroundColor;
-
-    // Desktop: mouse-move driven color
-    container.addEventListener('mousemove', (event) => {
-        if (isTouchDevice()) return;
-        const mouseX = event.clientX / window.innerWidth;
-        const mouseY = event.clientY / window.innerHeight;
-        const r = Math.floor(200 + mouseX * 10);
-        const g = Math.floor(200 + mouseY * 35);
-        const b = 230;
-        applyBgColor(`rgb(${r}, ${g}, ${b})`);
-    });
-
-    // Mobile: scroll-driven color (replaces mousemove)
-    window.addEventListener('scroll', () => {
-        if (!isTouchDevice()) return;
-        const scrollFraction = window.scrollY / (document.body.scrollHeight - window.innerHeight || 1);
-        const r = Math.floor(200 + scrollFraction * 10);
-        const g = Math.floor(200 + scrollFraction * 35);
-        const b = 230;
-        applyBgColor(`rgb(${r}, ${g}, ${b})`);
-    }, { passive: true });
+    // Paint mobile nav bar immediately on load
+    if (isTouchDevice() || window.innerWidth <= 600) {
+        const navEl = document.querySelector('nav');
+        if (navEl) navEl.style.backgroundColor = window.getComputedStyle(document.body).backgroundColor;
+    }
 
     // ── DESKTOP SCROLL HIDE/SHOW NAV ─────────────────────────────
     const menu = document.querySelector('.menu-container');
@@ -185,33 +204,32 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    if (isTouchDevice() || window.innerWidth <= 600) {
-        // Top strip — always present
+    const isMobile = isTouchDevice() || window.innerWidth <= 600;
+    const isHomePg = document.body.classList.contains('home-pg');
+
+    // ── TOP FADE STRIP ────────────────────────────────────────────
+    // Mobile: always present on every page (sits below the 66px nav bar)
+    // Desktop: only on About page (other pages use the floating pill, no bar)
+    if (isMobile || isHomePg) {
         blurTop = document.createElement('div');
-        blurTop.className = 'mobile-blur-top';
+        blurTop.className = isMobile ? 'mobile-blur-top' : 'desktop-blur-top';
         document.body.appendChild(blurTop);
-
-        // Bottom strip — About page only (fixed footer)
-        if (document.body.classList.contains('home-pg')) {
-            blurBottom = document.createElement('div');
-            blurBottom.className = 'mobile-blur-bottom';
-
-            function positionBlurBottom() {
-                const footer = document.querySelector('footer');
-                if (footer) {
-                    const fh = footer.getBoundingClientRect().height;
-                    blurBottom.style.bottom = fh + 'px';
-                }
-            }
-            document.body.appendChild(blurBottom);
-            positionBlurBottom();
-            window.addEventListener('resize', positionBlurBottom);
-        }
-
-        // Initial paint with default bg
-        const initBg = window.getComputedStyle(document.body).backgroundColor;
-        updateStripColors(initBg);
     }
+
+    // ── BOTTOM FADE STRIP ─────────────────────────────────────────
+    // About page only on all devices (fixed footer)
+    if (isHomePg) {
+        blurBottom = document.createElement('div');
+        blurBottom.className = isMobile ? 'mobile-blur-bottom' : 'desktop-blur-bottom';
+
+        document.body.appendChild(blurBottom);
+        // No dynamic positioning needed — CSS anchors the strip to bottom:0
+        // so the opaque gradient end is always tucked behind the footer.
+    }
+
+    // Paint strips immediately with the current bg colour
+    const initBg = window.getComputedStyle(document.body).backgroundColor;
+    updateStripColors(initBg);
 
     // ── RESUME DATE ABBREVIATION (all screen sizes) ───────────────
     // Shorten "Mon YYYY" → "Mon 'YY" everywhere so dates stay compact

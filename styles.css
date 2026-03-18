@@ -19,19 +19,13 @@ a {
 }
 
 body {
-    background-color: #cbe0ec;
-    transition: background-color 0.9s ease;
+    background-color: #eff2ee;
     animation: pageFadeIn 0.4s ease forwards;
 }
 
 @keyframes pageFadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 h1 {
@@ -81,7 +75,7 @@ nav {
 
 .menu-container {
     opacity: 0;
-    transition: opacity 1s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.9s ease;
+    transition: opacity 1s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     /* Tab shape: flat top, rounded bottom corners only */
     border-radius: 0 0 20px 20px;
     padding: 20px 10px 0 10px;
@@ -89,7 +83,7 @@ nav {
     width: 600px;
     align-self: flex-start;
     will-change: transform, opacity;
-    background-color: #cbe0ec;
+    background-color: #eff2ee;
     /* matches default body bg; kept in sync by JS */
 }
 
@@ -168,6 +162,18 @@ nav {
     transform: scaleX(1);
 }
 
+/* Retreat toward the right (clicked link is to the right — origin stays left, bar shrinks leftward) */
+.menu a.retreating-right::after {
+    transform-origin: right;
+    transform: scaleX(0) !important;
+}
+
+/* Retreat toward the left (clicked link is to the left — origin stays right, bar shrinks rightward) */
+.menu a.retreating-left::after {
+    transform-origin: left;
+    transform: scaleX(0) !important;
+}
+
 .menu .active a,
 .menu a.active {
     color: #222;
@@ -193,8 +199,7 @@ footer {
     height: auto;
     padding: 10px 0 0 110px;
     z-index: 200;
-    transition: background-color 0.9s ease;
-    background-color: #cbe0ec;
+    background-color: #eff2ee;
     /* kept in sync with body bg by JS */
     box-sizing: border-box;
 }
@@ -881,17 +886,14 @@ input[type=submit]:hover {
     /* ── #1: Solid nav bar at top so hamburger never overlaps text ── */
     nav {
         height: 66px;
-        background-color: #cbe0ec; /* default body bg — JS keeps this updated */
-        transition: background-color 0.9s ease;
+        background-color: #eff2ee; /* default body bg — JS keeps this updated */
         align-items: stretch;
-    }
-
-    /* Hide the normal pill-shaped menu bar entirely */
+    }    /* Hide the normal pill-shaped menu bar entirely */
     .menu-container {
         display: none !important;
     }
 
-    /* Hamburger button — fixed top-right, vertically centred in the 56px bar */
+    /* Hamburger button — fixed top-right, vertically centred in the 66px bar */
     .mobile-nav-toggle {
         display: flex;
         flex-direction: column;
@@ -899,7 +901,7 @@ input[type=submit]:hover {
         align-items: center;
         gap: 5px;
         position: fixed;
-        top: 18px;
+        top: 13px;
         right: 16px;
         z-index: 1100;
         width: 40px;
@@ -1003,6 +1005,17 @@ input[type=submit]:hover {
         transform: scaleX(1);
     }
 
+    /* Underline appears instantly on tap, before the page navigates */
+    .mobile-nav-overlay ul a.tapped::after {
+        transform: scaleX(1);
+    }
+
+    /* Underline retreats (reverse of appear) when a new link is tapped */
+    .mobile-nav-overlay ul a.retreating::after {
+        transform-origin: left;
+        transform: scaleX(0) !important;
+    }
+
     /* ── Resume title layout: keep org+time side by side, both can wrap ── */
     /* resumeItemTitle stays flex row. Each h4 is allowed to shrink/wrap
        independently. The org (left) gets flex:1 so it takes available space;
@@ -1078,10 +1091,44 @@ input[type=submit]:hover {
         position: fixed;
         left: 0;
         width: 100%;
-        height: 28px;
+        height: 56px;
+        /* bottom: 0 so the strip's lower edge sits at the screen bottom,
+           overlapping into the fixed footer. The opaque end of the gradient
+           is tucked behind the footer (z-index:200), just like the top strip's
+           opaque end hides behind the nav bar. */
+        bottom: 0;
         /* background set dynamically by JS to match body bg colour */
         pointer-events: none;
         z-index: 190;  /* below footer z-index:200 so icons stay sharp */
+    }
+}
+
+/* ── DESKTOP SCROLL-FADE STRIPS ──────────────────────────────────
+   Same technique as mobile but always present on desktop.
+   The pill nav bottom sits at ~80px (20px top-padding + 60px menu).
+   The bottom strip on the About page sits above the fixed footer.  */
+@media (min-width: 601px) {
+    .desktop-blur-top {
+        position: fixed;
+        top: 80px;           /* flush with bottom of the nav pill */
+        left: 0;
+        width: 100%;
+        height: 32px;
+        pointer-events: none;
+        z-index: 99;         /* just below nav z-index:100 */
+    }
+
+    .desktop-blur-bottom {
+        position: fixed;
+        left: 0;
+        width: 100%;
+        height: 48px;
+        /* bottom: 0 so the strip overlaps into the fixed footer.
+           The opaque end of the gradient hides behind the footer bar
+           (z-index:200), mirroring how the top strip hides behind the nav. */
+        bottom: 0;
+        pointer-events: none;
+        z-index: 190;        /* below footer z-index:200 */
     }
 }
 
