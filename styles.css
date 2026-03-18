@@ -294,30 +294,87 @@ a:hover {
 @media (max-width: 900px) {
     .left-container {
         position: relative;
-        width: 100vw;
-        max-width: 100vw;
+        width: 100%;
+        max-width: 100%;
         height: auto;
         float: none;
-        overflow-y: auto;
-    }
-
-    .right-container {
-        margin-left: 0;
-        width: 100vw;
-        position: relative;
-        top: 0;
-        height: auto;
         overflow-y: visible;
     }
 
-    .container {
+    .right-container {
+        /* Reset all desktop positioning — become a plain block in the normal flow */
+        position: static !important;
+        margin-left: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        top: auto !important;
+        overflow-y: visible !important;
+        overflow-x: visible !important;
+        mask-image: none !important;
+        -webkit-mask-image: none !important;
+    }
+
+    .about {
         flex-direction: column;
-        margin: 120px 0 80px 0;
+        margin: 0;
+    }
+
+    /* Remove the large top-margin on Experience h2 that was designed for
+       the sticky-scroll desktop layout — on mobile it just creates a gap */
+    .about .right-container h2 {
+        margin-top: 32px;
+    }
+
+    /* ── #2: Match About text margins/padding to Experience text ── */
+    /* The left-container uses margin-left: 25px on .about p and .about li,
+       which creates extra indentation vs the right-container content.
+       On mobile we zero those out so both sections feel identical. */
+    .home-pg .about p,
+    .home-pg .about li {
+        margin-left: 0;
+    }
+
+    /* "About Me" h2 and "Download resume" link were inheriting 25px left margin */
+    .left-container h2 {
+        margin-left: 0 !important;
+    }
+
+    .home-pg .section-link {
+        margin-left: 0;
+    }
+
+    /* Download resume inline link also has margin-left: 25px via inline style — 
+       override with padding reset on its parent p */
+    .home-pg .left-container > p[style] {
+        margin-left: 0 !important;
+    }
+
+    /* ── #3: Less blank space above h1 on About page ── */
+    .home-pg h1 {
+        margin-top: 16px;
+        margin-left: 0;
+    }
+
+    /* ── #5: Footer sits flush at bottom — reduce gap above social icons ── */
+    .home-pg footer {
+        padding: 6px 0 6px 20px;
+    }
+
+    .social-icons {
+        margin-bottom: 4px;
+    }
+
+    .home-pg .container {
+        margin: 70px 20px 60px 20px;
     }
 
     footer {
         width: 100vw;
         left: 0;
+    }
+
+    .right-container li {
+        margin-right: 0;
     }
 }
 
@@ -465,7 +522,29 @@ body::-webkit-scrollbar,
     margin: 10px 0;
 }
 
-/* DESIGN PAGE */
+/* ── MOBILE ART PAGE ────────────────────────────────────────── */
+@media (max-width: 600px) {
+    .art-pg .container {
+        width: 90vw;
+    }
+
+    .image-grid {
+        grid-template-columns: 1fr !important;
+        padding: 0;        /* was 10px — remove so grid aligns with paragraph text */
+        gap: 10px;
+    }
+
+    .grid-item {
+        padding: 0;        /* was 10px — remove so images/captions align flush */
+    }
+}
+
+/* ── MOBILE DESIGN PAGE ─────────────────────────────────────── */
+@media (max-width: 600px) {
+    .design-pg .container {
+        width: 90vw !important;
+    }
+}
 .design-pg .container {
     width: 66.66vw;
     margin: 0 auto;
@@ -647,7 +726,23 @@ input[type=submit]:hover {
     color: #222;
 }
 
-/* ── WRITING PAGE ─────────────────────────────────────────────── */
+@media (max-width: 600px) {
+    #contact-content,
+    .contact-pg .container,
+    .contact-pg p,
+    .contact-pg form {
+        width: 90vw !important;
+        max-width: 90vw !important;
+    }
+
+    .contact-pg input[type="text"],
+    .contact-pg input[type="email"] {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* WRITING PAGE */
 .writing-pg .container {
     width: 66.66vw;
     margin: 0 auto;
@@ -780,6 +875,216 @@ input[type=submit]:hover {
 }
 
 /* Responsive: stack image above text on narrow screens */
+/* ── MOBILE NAV — hamburger + fullscreen overlay ─────────────── */
+@media (max-width: 600px) {
+
+    /* ── #1: Solid nav bar at top so hamburger never overlaps text ── */
+    nav {
+        height: 66px;
+        background-color: #cbe0ec; /* default body bg — JS keeps this updated */
+        transition: background-color 0.9s ease;
+        align-items: stretch;
+    }
+
+    /* Hide the normal pill-shaped menu bar entirely */
+    .menu-container {
+        display: none !important;
+    }
+
+    /* Hamburger button — fixed top-right, vertically centred in the 56px bar */
+    .mobile-nav-toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        position: fixed;
+        top: 18px;
+        right: 16px;
+        z-index: 1100;
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+    }
+
+    /* Three lines */
+    .mobile-nav-toggle span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: #222;
+        border-radius: 2px;
+        transition: transform 0.3s ease, opacity 0.2s ease;
+        transform-origin: center;
+    }
+
+    /* Animate into X when open */
+    .mobile-nav-toggle.is-open span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+    }
+    .mobile-nav-toggle.is-open span:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+    .mobile-nav-toggle.is-open span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Fullscreen overlay */
+    .mobile-nav-overlay {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        inset: 0;
+        /* slide in from right */
+        transform: translateX(100%);
+        transition: transform 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1000;
+        /* Inherits the dynamic body bg color via JS */
+        background-color: inherit;
+    }
+
+    .mobile-nav-overlay.is-open {
+        transform: translateX(0);
+    }
+
+    .mobile-nav-overlay ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 36px;
+    }
+
+    .mobile-nav-overlay ul li {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 400;
+    }
+
+    .mobile-nav-overlay ul a {
+        border: none;
+        color: #222;
+        font-weight: 400;
+        letter-spacing: 0.02em;
+        position: relative;
+        padding-bottom: 4px;
+    }
+
+    .mobile-nav-overlay ul a::after {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 2px;
+        background: #6e7ba1c5;
+        border-radius: 2px;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.28s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .mobile-nav-overlay ul a.active,
+    .mobile-nav-overlay ul a.active::after {
+        transform: scaleX(1);
+        font-weight: 600;
+    }
+
+    .mobile-nav-overlay ul a.active::after {
+        transform: scaleX(1);
+    }
+
+    /* ── Resume title layout: keep org+time side by side, both can wrap ── */
+    /* resumeItemTitle stays flex row. Each h4 is allowed to shrink/wrap
+       independently. The org (left) gets flex:1 so it takes available space;
+       the time (right) is right-aligned and never forced to its own row. */
+    .resumeItemTitle {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 0;
+    }
+
+    .resumeOrg {
+        flex: 1 1 auto;
+        text-align: left;
+        margin-top: 8px;
+        margin-bottom: 0;
+        font-size: 14px;
+        min-width: 0;          /* allow shrinking */
+        padding-right: 8px;    /* small gap before the date */
+    }
+
+    .resumeTime {
+        flex: 0 0 auto;
+        text-align: right;
+        margin-top: 8px;
+        margin-bottom: 0;
+        font-size: 13px;
+        white-space: nowrap;   /* keep "Oct 2022" together on one token */
+    }
+
+    /* Full-width resume bullet text — stretch to match About paragraphs */
+    .right-container ul {
+        padding-left: 0;
+        margin-left: 0;
+    }
+
+    .right-container li {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+}
+
+/* Hide hamburger on desktop */
+@media (min-width: 601px) {
+    .mobile-nav-toggle,
+    .mobile-nav-overlay {
+        display: none !important;
+    }
+}
+
+/* ── MOBILE SCROLL-BLUR STRIPS ───────────────────────────────────
+   Fixed overlay divs injected by JS. They sit at the nav bottom
+   edge and footer top edge. Rather than blurring, they fade content
+   into the background colour — JS updates their colour to stay in
+   sync with the dynamic body bg.
+   pointer-events: none so they never block taps.                  */
+@media (max-width: 600px) {
+    .mobile-blur-top {
+        position: fixed;
+        top: 66px;           /* flush with bottom of the 66px nav bar */
+        left: 0;
+        width: 100%;
+        height: 28px;
+        /* background set dynamically by JS to match body bg colour */
+        pointer-events: none;
+        z-index: 500;
+    }
+
+    .mobile-blur-bottom {
+        position: fixed;
+        left: 0;
+        width: 100%;
+        height: 28px;
+        /* background set dynamically by JS to match body bg colour */
+        pointer-events: none;
+        z-index: 190;  /* below footer z-index:200 so icons stay sharp */
+    }
+}
+
 @media (max-width: 700px) {
     .article-link {
         flex-direction: column;
