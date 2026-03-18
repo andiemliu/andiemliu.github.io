@@ -372,11 +372,69 @@
           </div>
 
           <div class="img-thumbs" id="img-thumbs"></div>
-          <div style="height: 80px;"></div> <!-- Spacer to prevent footer overlap -->
+        </div><!-- /.img-carousel -->
       </section>
-      <!-- Add more design portfolio items below as needed -->
-    </div>
-  </div>
+
+      <!-- GRAPHICS DIVIDER -->
+      <div aria-hidden="true" style="max-width:680px;margin:84px auto 32px auto;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 56" width="100%" height="56">
+          <defs>
+            <linearGradient id="ivy-fade-2" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#7a9a6e" stop-opacity="0" />
+              <stop offset="10%" stop-color="#7a9a6e" stop-opacity="0.8" />
+              <stop offset="90%" stop-color="#7a9a6e" stop-opacity="0.8" />
+              <stop offset="100%" stop-color="#7a9a6e" stop-opacity="0" />
+            </linearGradient>
+          </defs>
+          <path d="M0,28 C60,22 110,34 170,28 C230,22 280,34 340,28 C400,22 450,34 510,28 C570,22 620,34 680,28"
+            stroke="url(#ivy-fade-2)" stroke-width="1.4" fill="none" stroke-linecap="round" />
+          <ellipse cx="100" cy="24" rx="7" ry="4" transform="rotate(-30,100,22)" fill="#7a9a6e" fill-opacity="0.45" />
+          <ellipse cx="155" cy="33" rx="7" ry="4" transform="rotate(25,155,32)" fill="#7a9a6e" fill-opacity="0.38" />
+          <ellipse cx="210" cy="22" rx="8" ry="4" transform="rotate(-20,210,22)" fill="#7a9a6e" fill-opacity="0.45" />
+          <ellipse cx="270" cy="33" rx="7" ry="4" transform="rotate(30,270,32)" fill="#7a9a6e" fill-opacity="0.38" />
+          <ellipse cx="340" cy="23" rx="8" ry="5" transform="rotate(-25,340,22)" fill="#7a9a6e" fill-opacity="0.5" />
+          <ellipse cx="405" cy="32" rx="7" ry="4" transform="rotate(28,405,32)" fill="#7a9a6e" fill-opacity="0.38" />
+          <ellipse cx="460" cy="25" rx="8" ry="4" transform="rotate(-22,460,22)" fill="#7a9a6e" fill-opacity="0.45" />
+          <ellipse cx="520" cy="32" rx="7" ry="4" transform="rotate(26,520,32)" fill="#7a9a6e" fill-opacity="0.38" />
+          <ellipse cx="578" cy="22" rx="7" ry="4" transform="rotate(-28,578,22)" fill="#7a9a6e" fill-opacity="0.38" />
+        </svg>
+      </div>
+
+      <section>
+        <h2 style="justify-self: center;">Graphics</h2>
+        <p>Event flyers, social media graphics, and promotional materials created for various organizations and occasions.</p>
+        <div class="img-carousel">
+
+          <div class="img-stage" id="gfx-stage">
+            <div class="img-stage-inner" id="gfx-stage-inner">
+              <img id="gfx-img" src="" alt="">
+            </div>
+          </div>
+
+          <div class="pdf-controls">
+            <button id="gfx-prev" class="round-btn" aria-label="Previous graphic" disabled>
+              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="18,6 10,14 18,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
+                  stroke-linejoin="round" fill="none" />
+              </svg>
+            </button>
+            <span id="gfx-info"
+              style="font-size:0.92rem;letter-spacing:0.03em;min-width:80px;text-align:center;color:#555;">1 / 7</span>
+            <button id="gfx-next" class="round-btn" aria-label="Next graphic">
+              <svg width="28" height="28" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="10,6 18,14 10,22" stroke="#222" stroke-width="4.5" stroke-linecap="round"
+                  stroke-linejoin="round" fill="none" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="img-thumbs" id="gfx-thumbs"></div>
+          <div style="height: 80px;"></div>
+        </div><!-- /.img-carousel -->
+      </section>
+
+    </div><!-- /.design-container -->
+  </div><!-- /.container -->
 
   <script>
     (() => {
@@ -539,3 +597,60 @@
 </body>
 
 </html>
+  <script>
+    (() => {
+      const GRAPHICS = [
+        { src: './design/graphics/city-planning.png', label: 'City Planning' },
+        { src: './design/graphics/tedx-2.png',        label: 'TEDx 2' },
+        { src: './design/graphics/teen-trivia.jpg',   label: 'Teen Trivia' },
+        { src: './design/graphics/egg-drop.jpg',      label: 'Egg Drop' },
+        { src: './design/graphics/match-book.jpg',    label: 'Match Book' },
+        { src: './design/graphics/roundup.png',       label: 'Roundup' },
+        { src: './design/graphics/tedx.png',          label: 'TEDx' },
+      ];
+
+      let current = 0;
+      let fading  = false;
+
+      const inner   = document.getElementById('gfx-stage-inner');
+      const img     = document.getElementById('gfx-img');
+      const prevBtn = document.getElementById('gfx-prev');
+      const nextBtn = document.getElementById('gfx-next');
+      const info    = document.getElementById('gfx-info');
+      const thumbs  = document.getElementById('gfx-thumbs');
+
+      function showImage(idx, instant) {
+        if (fading) return;
+        fading = true;
+        inner.classList.add('fading');
+        setTimeout(() => {
+          img.src = GRAPHICS[idx].src;
+          img.alt = GRAPHICS[idx].label;
+          inner.classList.remove('fading');
+          info.textContent = `${idx + 1} / ${GRAPHICS.length}`;
+          prevBtn.disabled = idx === 0;
+          nextBtn.disabled = idx === GRAPHICS.length - 1;
+          document.querySelectorAll('#gfx-thumbs .img-thumb').forEach((t, i) =>
+            t.classList.toggle('active', i === idx));
+          fading = false;
+        }, instant ? 0 : 220);
+      }
+
+      GRAPHICS.forEach((gfx, i) => {
+        const wrap = document.createElement('div');
+        wrap.className = 'img-thumb' + (i === 0 ? ' active' : '');
+        wrap.title = gfx.label;
+        wrap.addEventListener('click', () => { current = i; showImage(i); });
+        const t = document.createElement('img');
+        t.src = gfx.src;
+        t.alt = gfx.label;
+        wrap.appendChild(t);
+        thumbs.appendChild(wrap);
+      });
+
+      prevBtn.addEventListener('click', () => { if (current > 0)                   { current--; showImage(current); } });
+      nextBtn.addEventListener('click', () => { if (current < GRAPHICS.length - 1) { current++; showImage(current); } });
+
+      showImage(0, true);
+    })();
+  </script>
