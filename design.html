@@ -261,40 +261,6 @@
       opacity: 0;
     }
 
-    .modal-close {
-      position: fixed;
-      top: 20px;
-      right: 24px;
-      width: 44px;
-      height: 44px;
-      border: none;
-      background: none;
-      color: #fff;
-      font-size: 30px;
-      line-height: 44px;
-      text-align: center;
-      cursor: pointer;
-      opacity: 0.72;
-      transition: opacity 0.15s;
-      z-index: 1200;
-      /* above hamburger (1100) so the × is always tappable */
-      padding: 0;
-    }
-
-    .modal-close:hover {
-      opacity: 1;
-    }
-
-    /* On mobile the hamburger occupies top-right (top:13px, right:16px, 40×40px).
-       Move the close button below the nav bar so the two never overlap. */
-    @media (max-width: 600px) {
-      .modal-close {
-        top: 76px;
-        /* 66px nav bar + 10px breathing room */
-        right: 8px;
-      }
-    }
-
     .modal-nav {
       position: fixed;
       top: 50%;
@@ -378,7 +344,6 @@
 
   <!-- ── PDF Modal ────────────────────────────────────────────── -->
   <div id="pdf-modal-backdrop" role="dialog" aria-modal="true">
-    <button class="modal-close" id="pdf-modal-close" aria-label="Close">&times;</button>
     <button class="modal-nav prev" id="pdf-modal-prev" aria-label="Previous page">&#8249;</button>
     <div id="pdf-modal-canvas-wrap">
       <canvas id="pdf-modal-canvas"></canvas>
@@ -388,7 +353,6 @@
 
   <!-- ── Shared Image Modal ────────────────────────────────────── -->
   <div id="img-modal-backdrop" class="img-modal-backdrop" role="dialog" aria-modal="true">
-    <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
     <button class="modal-nav prev" id="modal-prev" aria-label="Previous">&#8249;</button>
     <div class="img-modal">
       <img id="modal-img" src="" alt="">
@@ -799,7 +763,6 @@
     (() => {
       const backdrop = document.getElementById('img-modal-backdrop');
       const modalImg = document.getElementById('modal-img');
-      const btnClose = document.getElementById('modal-close');
       const btnPrev = document.getElementById('modal-prev');
       const btnNext = document.getElementById('modal-next');
 
@@ -812,11 +775,13 @@
         setModalImage(index, true);
         backdrop.classList.add('open');
         document.body.style.overflow = 'hidden';
+        if (window.hamburgerModalOpen) window.hamburgerModalOpen(closeModal);
       }
 
       function closeModal() {
         backdrop.classList.remove('open');
         document.body.style.overflow = '';
+        if (window.hamburgerModalClose) window.hamburgerModalClose();
       }
 
       function setModalImage(idx, instant) {
@@ -831,7 +796,6 @@
         }, instant ? 0 : 160);
       }
 
-      btnClose.addEventListener('click', closeModal);
       backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
       btnPrev.addEventListener('click', () => { if (currentIndex > 0) setModalImage(currentIndex - 1); });
       btnNext.addEventListener('click', () => { if (currentIndex < currentImages.length - 1) setModalImage(currentIndex + 1); });
@@ -853,7 +817,6 @@
       const backdrop = document.getElementById('pdf-modal-backdrop');
       const canvas = document.getElementById('pdf-modal-canvas');
       const ctx = canvas.getContext('2d');
-      const btnClose = document.getElementById('pdf-modal-close');
       const btnPrev = document.getElementById('pdf-modal-prev');
       const btnNext = document.getElementById('pdf-modal-next');
 
@@ -891,14 +854,15 @@
         backdrop.classList.add('open');
         document.body.style.overflow = 'hidden';
         renderModalPage(startPage, true);
+        if (window.hamburgerModalOpen) window.hamburgerModalOpen(closePdfModal);
       }
 
       function closePdfModal() {
         backdrop.classList.remove('open');
         document.body.style.overflow = '';
+        if (window.hamburgerModalClose) window.hamburgerModalClose();
       }
 
-      btnClose.addEventListener('click', closePdfModal);
       backdrop.addEventListener('click', e => { if (e.target === backdrop) closePdfModal(); });
       btnPrev.addEventListener('click', () => { if (modalPageNum > 1) renderModalPage(modalPageNum - 1); });
       btnNext.addEventListener('click', () => {

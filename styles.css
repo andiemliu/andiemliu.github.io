@@ -24,13 +24,8 @@ body {
 }
 
 @keyframes pageFadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 h1 {
@@ -293,7 +288,6 @@ a:hover {
 .left-container {
     opacity: 0;
     transition: opacity 1s ease;
-    margin-right: 100px;
     flex: 0 0 40%;
     width: 40%;
     position: sticky;
@@ -350,7 +344,7 @@ a:hover {
     /* Remove the large top-margin on Experience h2 that was designed for
        the sticky-scroll desktop layout — on mobile it just creates a gap */
     .about .right-container h2 {
-        margin-top: 12px;
+        margin-top: 32px;
     }
 
     /* ── #2: Match About text margins/padding to Experience text ── */
@@ -373,7 +367,7 @@ a:hover {
 
     /* Download resume inline link also has margin-left: 25px via inline style — 
        override with padding reset on its parent p */
-    .home-pg .left-container>p[style] {
+    .home-pg .left-container > p[style] {
         margin-left: 0 !important;
     }
 
@@ -561,14 +555,12 @@ body::-webkit-scrollbar,
 
     .image-grid {
         grid-template-columns: 1fr !important;
-        padding: 0;
-        /* was 10px — remove so grid aligns with paragraph text */
+        padding: 0;        /* was 10px — remove so grid aligns with paragraph text */
         gap: 10px;
     }
 
     .grid-item {
-        padding: 0;
-        /* was 10px — remove so images/captions align flush */
+        padding: 0;        /* was 10px — remove so images/captions align flush */
     }
 }
 
@@ -578,7 +570,6 @@ body::-webkit-scrollbar,
         width: 90vw !important;
     }
 }
-
 .design-pg .container {
     width: 66.66vw;
     margin: 0 auto;
@@ -761,7 +752,6 @@ input[type=submit]:hover {
 }
 
 @media (max-width: 600px) {
-
     #contact-content,
     .contact-pg .container,
     .contact-pg p,
@@ -916,12 +906,9 @@ input[type=submit]:hover {
     /* ── #1: Solid nav bar at top so hamburger never overlaps text ── */
     nav {
         height: 66px;
-        background-color: #eff2ee;
-        /* default body bg — JS keeps this updated */
+        background-color: #eff2ee; /* default body bg — JS keeps this updated */
         align-items: stretch;
-    }
-
-    /* Hide the normal pill-shaped menu bar entirely */
+    }    /* Hide the normal pill-shaped menu bar entirely */
     .menu-container {
         display: none !important;
     }
@@ -943,6 +930,16 @@ input[type=submit]:hover {
         border: none;
         cursor: pointer;
         padding: 4px;
+        border-radius: 6px;
+        transition: background-color 0.2s, border-color 0.2s;
+    }
+
+    /* When a modal is open, box the ✕ with the site's bg + accent border
+       so it's always legible against dark backdrops or bright images.
+       Mirrors the contact page submit button style exactly. */
+    body.modal-is-open .mobile-nav-toggle {
+        background-color: #eff2ee;
+        border: 1.5px solid #6e7ba1c5;
     }
 
     /* Three lines */
@@ -960,12 +957,10 @@ input[type=submit]:hover {
     .mobile-nav-toggle.is-open span:nth-child(1) {
         transform: translateY(7px) rotate(45deg);
     }
-
     .mobile-nav-toggle.is-open span:nth-child(2) {
         opacity: 0;
         transform: scaleX(0);
     }
-
     .mobile-nav-toggle.is-open span:nth-child(3) {
         transform: translateY(-7px) rotate(-45deg);
     }
@@ -1068,10 +1063,8 @@ input[type=submit]:hover {
         margin-top: 8px;
         margin-bottom: 0;
         font-size: 14px;
-        min-width: 0;
-        /* allow shrinking */
-        padding-right: 8px;
-        /* small gap before the date */
+        min-width: 0;          /* allow shrinking */
+        padding-right: 8px;    /* small gap before the date */
     }
 
     .resumeTime {
@@ -1080,8 +1073,7 @@ input[type=submit]:hover {
         margin-top: 8px;
         margin-bottom: 0;
         font-size: 13px;
-        white-space: nowrap;
-        /* keep "Oct 2022" together on one token */
+        white-space: nowrap;   /* keep "Oct 2022" together on one token */
     }
 
     /* Full-width resume bullet text — stretch to match About paragraphs */
@@ -1101,7 +1093,6 @@ input[type=submit]:hover {
 
 /* Hide hamburger on desktop */
 @media (min-width: 601px) {
-
     .mobile-nav-toggle,
     .mobile-nav-overlay {
         display: none !important;
@@ -1117,8 +1108,7 @@ input[type=submit]:hover {
 @media (max-width: 600px) {
     .mobile-blur-top {
         position: fixed;
-        top: 66px;
-        /* flush with bottom of the 66px nav bar */
+        top: 66px;           /* flush with bottom of the 66px nav bar */
         left: 0;
         width: 100%;
         height: 28px;
@@ -1139,8 +1129,7 @@ input[type=submit]:hover {
         bottom: 0;
         /* background set dynamically by JS to match body bg colour */
         pointer-events: none;
-        z-index: 190;
-        /* below footer z-index:200 so icons stay sharp */
+        z-index: 190;  /* below footer z-index:200 so icons stay sharp */
     }
 }
 
@@ -1151,14 +1140,12 @@ input[type=submit]:hover {
 @media (min-width: 601px) {
     .desktop-blur-top {
         position: fixed;
-        top: 80px;
-        /* flush with bottom of the nav pill */
+        top: 80px;           /* flush with bottom of the nav pill */
         left: 0;
         width: 100%;
         height: 32px;
         pointer-events: none;
-        z-index: 99;
-        /* just below nav z-index:100 */
+        z-index: 99;         /* just below nav z-index:100 */
     }
 
     .desktop-blur-bottom {
@@ -1171,8 +1158,7 @@ input[type=submit]:hover {
            (z-index:200), mirroring how the top strip hides behind the nav. */
         bottom: 0;
         pointer-events: none;
-        z-index: 190;
-        /* below footer z-index:200 */
+        z-index: 190;        /* below footer z-index:200 */
     }
 }
 

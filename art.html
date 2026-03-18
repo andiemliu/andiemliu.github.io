@@ -19,18 +19,15 @@
             align-items: center;
             justify-content: center;
         }
-
         .img-modal-backdrop.open {
             display: flex;
         }
-
         .img-modal {
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-
         .img-modal img {
             max-width: 98vw;
             max-height: 98vh;
@@ -40,41 +37,9 @@
             display: block;
             transition: opacity 0.18s ease;
         }
-
         .img-modal img.fading {
             opacity: 0;
         }
-
-        .modal-close {
-            position: fixed;
-            top: 20px;
-            right: 24px;
-            width: 44px;
-            height: 44px;
-            border: none;
-            background: none;
-            color: #fff;
-            font-size: 30px;
-            line-height: 44px;
-            text-align: center;
-            cursor: pointer;
-            opacity: 0.72;
-            transition: opacity 0.15s;
-            z-index: 1200;
-            padding: 0;
-        }
-
-        .modal-close:hover {
-            opacity: 1;
-        }
-
-        @media (max-width: 600px) {
-            .modal-close {
-                top: 76px;
-                right: 16px;
-            }
-        }
-
         .modal-nav {
             position: fixed;
             top: 50%;
@@ -91,23 +56,10 @@
             z-index: 1001;
             user-select: none;
         }
-
-        .modal-nav:hover {
-            opacity: 1;
-        }
-
-        .modal-nav:disabled {
-            opacity: 0.16;
-            cursor: default;
-        }
-
-        .modal-nav.prev {
-            left: 12px;
-        }
-
-        .modal-nav.next {
-            right: 12px;
-        }
+        .modal-nav:hover { opacity: 1; }
+        .modal-nav:disabled { opacity: 0.16; cursor: default; }
+        .modal-nav.prev { left: 12px; }
+        .modal-nav.next { right: 12px; }
 
         /* Make grid images show they're clickable */
         .image-grid .grid-item img,
@@ -121,7 +73,6 @@
 
     <!-- ── Image Modal ──────────────────────────────────────────── -->
     <div id="img-modal-backdrop" class="img-modal-backdrop" role="dialog" aria-modal="true">
-        <button class="modal-close" id="modal-close" aria-label="Close">&times;</button>
         <button class="modal-nav prev" id="modal-prev" aria-label="Previous">&#8249;</button>
         <div class="img-modal">
             <img id="modal-img" src="" alt="">
@@ -162,15 +113,13 @@
         </p>
         <div class="image-grid" data-modal-group="mural">
             <div class="grid-item">
-                <img src="./art/mural-imgs/Initial.jpg" alt="Common Threads mural contest submission"
-                    fetchpriority="high" decoding="async">
+                <img src="./art/mural-imgs/Initial.jpg" alt="Common Threads mural contest submission" fetchpriority="high" decoding="async">
                 <p>My submission for the campus wide contest featured ten textile patterns from across the world,
                     including Indigenous tribes, serving as the environment through which the Berkeley bear walks. I
                     used student body demographics to select textile origins.</p>
             </div>
             <div class="grid-item">
-                <img src="./art/mural-imgs/Small_Quilt.jpg" alt="Common Threads mural small quilt" loading="lazy"
-                    decoding="async">
+                <img src="./art/mural-imgs/Small_Quilt.jpg" alt="Common Threads mural small quilt" loading="lazy" decoding="async">
                 <p>To maximize the number of cultures I could represent, I created a quilt with 154 squares. I added
                     stitching and a folded edge, making it more realistic.</p>
             </div>
@@ -181,23 +130,20 @@
                     I experimented with a more realistic brown bear, Berkeley's mascot.</p>
             </div>
             <div class="grid-item">
-                <img src="./art/mural-imgs/Small_Campanile.jpg" alt="Common Threads mural small Campanile design"
-                    loading="lazy" decoding="async">
+                <img src="./art/mural-imgs/Small_Campanile.jpg" alt="Common Threads mural small Campanile design" loading="lazy" decoding="async">
                 <p>The bear did not obviously represent UC Berkeley, so I experimented with campus landmarks. This one,
                     of the Campanile, represents the iconic bell tower of the university, but appeared a little awkward.
                 </p>
             </div>
             <div class="grid-item">
-                <img src="./art/mural-imgs/Long_Quilt_Sather_Gate.jpg" alt="Common Threads mural Sather Gate proposal"
-                    loading="lazy" decoding="async">
+                <img src="./art/mural-imgs/Long_Quilt_Sather_Gate.jpg" alt="Common Threads mural Sather Gate proposal" loading="lazy" decoding="async">
                 <p>At this point in the design process, the dimensions of the mural were confirmed. Instead of the wall
                     I had been envisioning, it was a 70 ft by 14 ft breezeway.</p>
                 <p>Instead of the Campanile, we considered Sather Gate, but it was too intricate and messy over the
                     textile patterns.</p>
             </div>
             <div class="grid-item">
-                <img src="./art/mural-imgs/Long_Rays.jpg" alt="Common Threads rays behind Campanile sketch"
-                    loading="lazy" decoding="async">
+                <img src="./art/mural-imgs/Long_Rays.jpg" alt="Common Threads rays behind Campanile sketch" loading="lazy" decoding="async">
                 <p>We went back to the Campanile, since it looked more cohesive on the longer wall. Here is a mock-up of
                     how the textiles would be arranged. The thin strips were not ideal for showcasing the patterns.</p>
             </div>
@@ -207,16 +153,14 @@
                 <p>Concentric rings felt more welcoming, but presented the same problem with visibility of patterns.</p>
             </div>
             <div class="grid-item">
-                <img src="./art/mural-imgs/Final_Gradient.jpg" alt="Common Threads final mural design with gradient"
-                    loading="lazy" decoding="async">
+                <img src="./art/mural-imgs/Final_Gradient.jpg" alt="Common Threads final mural design with gradient" loading="lazy" decoding="async">
                 <p>One final option was to incorporate the blue and gold colors of the university in a gradient.
                     However, this approach detracted from the cultural textiles.</p>
             </div>
         </div>
         <div class="image-grid" style="grid-template-columns:auto" data-modal-group="mural">
             <div class="grid-item">
-                <img src="./art/mural-imgs/Final.jpg" alt="Common Threads final mural design" loading="lazy"
-                    decoding="async">
+                <img src="./art/mural-imgs/Final.jpg" alt="Common Threads final mural design" loading="lazy" decoding="async">
                 <p style="justify-self:left">We ultimately decided to forgo any overlayed elements or gradients to
                     prioritize visibility.
                     <a href="https://drive.google.com/file/d/1tWriDBlMuKJJgLr7FQDJbH5zszKQ7ZoC/view?usp=sharing"
@@ -237,24 +181,15 @@
                 </defs>
                 <path d="M0,28 C60,22 110,34 170,28 C230,22 280,34 340,28 C400,22 450,34 510,28 C570,22 620,34 680,28"
                     stroke="url(#ivy-fade)" stroke-width="1.4" fill="none" stroke-linecap="round" />
-                <ellipse cx="100" cy="24" rx="7" ry="4" transform="rotate(-30,100,22)" fill="#7a9a6e"
-                    fill-opacity="0.45" />
-                <ellipse cx="155" cy="33" rx="7" ry="4" transform="rotate(25,155,32)" fill="#7a9a6e"
-                    fill-opacity="0.38" />
-                <ellipse cx="210" cy="22" rx="8" ry="4" transform="rotate(-20,210,22)" fill="#7a9a6e"
-                    fill-opacity="0.45" />
-                <ellipse cx="270" cy="33" rx="7" ry="4" transform="rotate(30,270,32)" fill="#7a9a6e"
-                    fill-opacity="0.38" />
-                <ellipse cx="340" cy="23" rx="8" ry="5" transform="rotate(-25,340,22)" fill="#7a9a6e"
-                    fill-opacity="0.5" />
-                <ellipse cx="405" cy="32" rx="7" ry="4" transform="rotate(28,405,32)" fill="#7a9a6e"
-                    fill-opacity="0.38" />
-                <ellipse cx="460" cy="25" rx="8" ry="4" transform="rotate(-22,460,22)" fill="#7a9a6e"
-                    fill-opacity="0.45" />
-                <ellipse cx="520" cy="32" rx="7" ry="4" transform="rotate(26,520,32)" fill="#7a9a6e"
-                    fill-opacity="0.38" />
-                <ellipse cx="578" cy="22" rx="7" ry="4" transform="rotate(-28,578,22)" fill="#7a9a6e"
-                    fill-opacity="0.38" />
+                <ellipse cx="100" cy="24" rx="7" ry="4" transform="rotate(-30,100,22)" fill="#7a9a6e" fill-opacity="0.45" />
+                <ellipse cx="155" cy="33" rx="7" ry="4" transform="rotate(25,155,32)" fill="#7a9a6e" fill-opacity="0.38" />
+                <ellipse cx="210" cy="22" rx="8" ry="4" transform="rotate(-20,210,22)" fill="#7a9a6e" fill-opacity="0.45" />
+                <ellipse cx="270" cy="33" rx="7" ry="4" transform="rotate(30,270,32)" fill="#7a9a6e" fill-opacity="0.38" />
+                <ellipse cx="340" cy="23" rx="8" ry="5" transform="rotate(-25,340,22)" fill="#7a9a6e" fill-opacity="0.5" />
+                <ellipse cx="405" cy="32" rx="7" ry="4" transform="rotate(28,405,32)" fill="#7a9a6e" fill-opacity="0.38" />
+                <ellipse cx="460" cy="25" rx="8" ry="4" transform="rotate(-22,460,22)" fill="#7a9a6e" fill-opacity="0.45" />
+                <ellipse cx="520" cy="32" rx="7" ry="4" transform="rotate(26,520,32)" fill="#7a9a6e" fill-opacity="0.38" />
+                <ellipse cx="578" cy="22" rx="7" ry="4" transform="rotate(-28,578,22)" fill="#7a9a6e" fill-opacity="0.38" />
             </svg>
         </div>
 
@@ -267,8 +202,7 @@
             incredible experience to see the design come off a sheet of printer paper and onto the wall.
         </p>
         <div class="grid-item" data-modal-group="kennedy">
-            <img src="./art/mural-imgs/kennedy.jpg" alt="John F. Kennedy Middle School mural" loading="lazy"
-                decoding="async">
+            <img src="./art/mural-imgs/kennedy.jpg" alt="John F. Kennedy Middle School mural" loading="lazy" decoding="async">
         </div>
         <!-- IVY VINE CURL -->
         <div aria-hidden="true" style="max-width:680px;margin:48px auto 48px auto;">
@@ -283,24 +217,15 @@
                 </defs>
                 <path d="M0,28 C60,22 110,34 170,28 C230,22 280,34 340,28 C400,22 450,34 510,28 C570,22 620,34 680,28"
                     stroke="url(#ivy-fade)" stroke-width="1.4" fill="none" stroke-linecap="round" />
-                <ellipse cx="100" cy="24" rx="7" ry="4" transform="rotate(-30,100,22)" fill="#7a9a6e"
-                    fill-opacity="0.45" />
-                <ellipse cx="155" cy="33" rx="7" ry="4" transform="rotate(25,155,32)" fill="#7a9a6e"
-                    fill-opacity="0.38" />
-                <ellipse cx="210" cy="22" rx="8" ry="4" transform="rotate(-20,210,22)" fill="#7a9a6e"
-                    fill-opacity="0.45" />
-                <ellipse cx="270" cy="33" rx="7" ry="4" transform="rotate(30,270,32)" fill="#7a9a6e"
-                    fill-opacity="0.38" />
-                <ellipse cx="340" cy="23" rx="8" ry="5" transform="rotate(-25,340,22)" fill="#7a9a6e"
-                    fill-opacity="0.5" />
-                <ellipse cx="405" cy="32" rx="7" ry="4" transform="rotate(28,405,32)" fill="#7a9a6e"
-                    fill-opacity="0.38" />
-                <ellipse cx="460" cy="25" rx="8" ry="4" transform="rotate(-22,460,22)" fill="#7a9a6e"
-                    fill-opacity="0.45" />
-                <ellipse cx="520" cy="32" rx="7" ry="4" transform="rotate(26,520,32)" fill="#7a9a6e"
-                    fill-opacity="0.38" />
-                <ellipse cx="578" cy="22" rx="7" ry="4" transform="rotate(-28,578,22)" fill="#7a9a6e"
-                    fill-opacity="0.38" />
+                <ellipse cx="100" cy="24" rx="7" ry="4" transform="rotate(-30,100,22)" fill="#7a9a6e" fill-opacity="0.45" />
+                <ellipse cx="155" cy="33" rx="7" ry="4" transform="rotate(25,155,32)" fill="#7a9a6e" fill-opacity="0.38" />
+                <ellipse cx="210" cy="22" rx="8" ry="4" transform="rotate(-20,210,22)" fill="#7a9a6e" fill-opacity="0.45" />
+                <ellipse cx="270" cy="33" rx="7" ry="4" transform="rotate(30,270,32)" fill="#7a9a6e" fill-opacity="0.38" />
+                <ellipse cx="340" cy="23" rx="8" ry="5" transform="rotate(-25,340,22)" fill="#7a9a6e" fill-opacity="0.5" />
+                <ellipse cx="405" cy="32" rx="7" ry="4" transform="rotate(28,405,32)" fill="#7a9a6e" fill-opacity="0.38" />
+                <ellipse cx="460" cy="25" rx="8" ry="4" transform="rotate(-22,460,22)" fill="#7a9a6e" fill-opacity="0.45" />
+                <ellipse cx="520" cy="32" rx="7" ry="4" transform="rotate(26,520,32)" fill="#7a9a6e" fill-opacity="0.38" />
+                <ellipse cx="578" cy="22" rx="7" ry="4" transform="rotate(-28,578,22)" fill="#7a9a6e" fill-opacity="0.38" />
             </svg>
         </div>
         <h2>Gouache paintings</h2>
@@ -312,12 +237,10 @@
         </p>
         <div class="image-grid" style="margin-bottom: 100px" data-modal-group="paintings">
             <div class="grid-item">
-                <img src="./art/paintings/hmc_house.jpg" alt="Howl's Moving Castle house" loading="lazy"
-                    decoding="async">
+                <img src="./art/paintings/hmc_house.jpg" alt="Howl's Moving Castle house" loading="lazy" decoding="async">
             </div>
             <div class="grid-item">
-                <img src="./art/paintings/pm_komorebi.jpg" alt="Princess Mononoke komorebi" loading="lazy"
-                    decoding="async">
+                <img src="./art/paintings/pm_komorebi.jpg" alt="Princess Mononoke komorebi" loading="lazy" decoding="async">
             </div>
             <div class="grid-item">
                 <img src="./art/paintings/ttr_trail.jpg" alt="Totoro nature path" loading="lazy" decoding="async">
@@ -326,8 +249,7 @@
                 <img src="./art/paintings/sa_house.jpg" alt="Spirited Away house" loading="lazy" decoding="async">
             </div>
             <div class="grid-item">
-                <img src="./art/paintings/lok_airtemple.jpg" alt="Legend of Korra air temple" loading="lazy"
-                    decoding="async">
+                <img src="./art/paintings/lok_airtemple.jpg" alt="Legend of Korra air temple" loading="lazy" decoding="async">
             </div>
             <div class="grid-item">
                 <img src="./art/paintings/ttr_acorn.jpg" alt="Totoro mini totoro" loading="lazy" decoding="async">
@@ -336,82 +258,82 @@
     </div> <!-- art-pg -->
 
     <script>
-        /* ── Art page image modal ─────────────────────────────────────
-           Three navigable groups:
-             "mural"    — 9 Common Threads process + final images
-             "kennedy"  — 1 Kennedy mural image (solo, no nav arrows)
-             "paintings"— 6 gouache paintings
-           Clicking any grid image opens the modal at that image's index
-           within its group, with prev/next arrows to navigate the group.
-        ─────────────────────────────────────────────────────────────── */
-        (() => {
-            const backdrop = document.getElementById('img-modal-backdrop');
-            const modalImg = document.getElementById('modal-img');
-            const btnClose = document.getElementById('modal-close');
-            const btnPrev = document.getElementById('modal-prev');
-            const btnNext = document.getElementById('modal-next');
+    /* ── Art page image modal ─────────────────────────────────────
+       Three navigable groups:
+         "mural"    — 9 Common Threads process + final images
+         "kennedy"  — 1 Kennedy mural image (solo, no nav arrows)
+         "paintings"— 6 gouache paintings
+       Clicking any grid image opens the modal at that image's index
+       within its group, with prev/next arrows to navigate the group.
+    ─────────────────────────────────────────────────────────────── */
+    (() => {
+        const backdrop = document.getElementById('img-modal-backdrop');
+        const modalImg = document.getElementById('modal-img');
+        const btnPrev  = document.getElementById('modal-prev');
+        const btnNext  = document.getElementById('modal-next');
 
-            let currentImages = [];
-            let currentIndex = 0;
+        let currentImages = [];
+        let currentIndex  = 0;
 
-            function openModal(images, index) {
-                currentImages = images;
-                currentIndex = index;
-                setModalImage(index, true);
-                backdrop.classList.add('open');
-                document.body.style.overflow = 'hidden';
-            }
+        function openModal(images, index) {
+            currentImages = images;
+            currentIndex  = index;
+            setModalImage(index, true);
+            backdrop.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            if (window.hamburgerModalOpen) window.hamburgerModalOpen(closeModal);
+        }
 
-            function closeModal() {
-                backdrop.classList.remove('open');
-                document.body.style.overflow = '';
-            }
+        function closeModal() {
+            backdrop.classList.remove('open');
+            document.body.style.overflow = '';
+            if (window.hamburgerModalClose) window.hamburgerModalClose();
+        }
 
-            function setModalImage(idx, instant) {
-                if (!instant) modalImg.classList.add('fading');
-                setTimeout(() => {
-                    modalImg.src = currentImages[idx].src;
-                    modalImg.alt = currentImages[idx].alt || '';
-                    modalImg.classList.remove('fading');
-                    btnPrev.disabled = idx === 0;
-                    btnNext.disabled = idx === currentImages.length - 1;
-                    currentIndex = idx;
-                }, instant ? 0 : 160);
-            }
+        function setModalImage(idx, instant) {
+            if (!instant) modalImg.classList.add('fading');
+            setTimeout(() => {
+                modalImg.src = currentImages[idx].src;
+                modalImg.alt = currentImages[idx].alt || '';
+                modalImg.classList.remove('fading');
+                btnPrev.disabled = idx === 0;
+                btnNext.disabled = idx === currentImages.length - 1;
+                currentIndex = idx;
+            }, instant ? 0 : 160);
+        }
 
-            btnClose.addEventListener('click', closeModal);
-            backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
-            btnPrev.addEventListener('click', () => { if (currentIndex > 0) setModalImage(currentIndex - 1); });
-            btnNext.addEventListener('click', () => { if (currentIndex < currentImages.length - 1) setModalImage(currentIndex + 1); });
+        backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+        btnPrev.addEventListener('click', () => { if (currentIndex > 0) setModalImage(currentIndex - 1); });
+        btnNext.addEventListener('click', () => { if (currentIndex < currentImages.length - 1) setModalImage(currentIndex + 1); });
 
-            document.addEventListener('keydown', e => {
-                if (!backdrop.classList.contains('open')) return;
-                if (e.key === 'Escape') closeModal();
-                if (e.key === 'ArrowLeft' && currentIndex > 0) setModalImage(currentIndex - 1);
-                if (e.key === 'ArrowRight' && currentIndex < currentImages.length - 1) setModalImage(currentIndex + 1);
+        document.addEventListener('keydown', e => {
+            if (!backdrop.classList.contains('open')) return;
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowLeft'  && currentIndex > 0) setModalImage(currentIndex - 1);
+            if (e.key === 'ArrowRight' && currentIndex < currentImages.length - 1) setModalImage(currentIndex + 1);
+        });
+
+        // Build group image lists from data-modal-group attributes,
+        // preserving document order so groups that span multiple grids
+        // (like "mural") are collected in the right sequence.
+        const groups = {};
+        document.querySelectorAll('[data-modal-group]').forEach(container => {
+            const group = container.dataset.modalGroup;
+            if (!groups[group]) groups[group] = [];
+            container.querySelectorAll('img').forEach(img => {
+                groups[group].push({ src: img.src, alt: img.alt, el: img });
             });
+        });
 
-            // Build group image lists from data-modal-group attributes,
-            // preserving document order so groups that span multiple grids
-            // (like "mural") are collected in the right sequence.
-            const groups = {};
-            document.querySelectorAll('[data-modal-group]').forEach(container => {
-                const group = container.dataset.modalGroup;
-                if (!groups[group]) groups[group] = [];
-                container.querySelectorAll('img').forEach(img => {
-                    groups[group].push({ src: img.src, alt: img.alt, el: img });
+        // Attach click handlers to every image in every group
+        Object.entries(groups).forEach(([, images]) => {
+            images.forEach((item, idx) => {
+                item.el.addEventListener('click', () => {
+                    openModal(images, idx);
                 });
             });
-
-            // Attach click handlers to every image in every group
-            Object.entries(groups).forEach(([, images]) => {
-                images.forEach((item, idx) => {
-                    item.el.addEventListener('click', () => {
-                        openModal(images, idx);
-                    });
-                });
-            });
-        })();
+        });
+    })();
     </script>
 
 </body>

@@ -41,9 +41,38 @@ document.addEventListener('DOMContentLoaded', function () {
         document.body.style.overflow = '';
     }
 
+    // ── MODAL-AWARE HAMBURGER CLICK ───────────────────────────────
+    // When a page modal is open, the hamburger acts as the modal's
+    // close button (showing the same ✕ animation). When no modal is
+    // open it toggles the nav overlay as normal.
+    let modalCloseFn = null;   // set by page scripts via window.hamburgerModalOpen
+
     hamburgerBtn.addEventListener('click', () => {
-        if (overlayOpen) closeOverlay(); else openOverlay();
+        if (modalCloseFn) {
+            modalCloseFn();           // delegate to modal close
+        } else if (overlayOpen) {
+            closeOverlay();
+        } else {
+            openOverlay();
+        }
     });
+
+    // API for page-level modal scripts:
+    //   call window.hamburgerModalOpen(closeFn) when a modal opens
+    //   call window.hamburgerModalClose()       when a modal closes
+    window.hamburgerModalOpen = function (closeFn) {
+        modalCloseFn = closeFn;
+        hamburgerBtn.classList.add('is-open');   // animates to ✕
+        document.body.classList.add('modal-is-open');
+        // Keep the box bg in sync with the current dynamic body color
+        hamburgerBtn.style.backgroundColor = window.getComputedStyle(document.body).backgroundColor;
+    };
+    window.hamburgerModalClose = function () {
+        modalCloseFn = null;
+        hamburgerBtn.classList.remove('is-open'); // animates back to ≡
+        document.body.classList.remove('modal-is-open');
+        hamburgerBtn.style.backgroundColor = '';  // revert to CSS default (none)
+    };
 
     // Close overlay when a nav link is tapped
     overlay.querySelectorAll('a').forEach(link => {
