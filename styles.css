@@ -244,7 +244,7 @@ footer {
 .about p {
     margin-left: 25px;
     line-height: 1.5;
-    max-width: 620px;
+    max-width: 27vw;
 }
 
 .about li {
@@ -316,6 +316,7 @@ a:hover {
         top: 0;           /* clear the desktop sticky offset — position:relative makes top shift content down */
         width: 100%;
         max-width: 100%;
+        padding-right: 48px !important; /* add breathing room on the right so text doesn't butt up against scrollbar */
         height: auto;
         float: none;
         overflow-y: visible;
